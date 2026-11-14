@@ -74,7 +74,7 @@ To adapt this repository from chemistry to finance **without breaking existing f
     - *6*: Viable baseline role in financial services / corporate finance / operations.
     - *4-5*: Misaligned financial domain (e.g. pure back-office bookkeeping, retail branch counter teller).
     - *1-3*: Disqualified (Managing Partner / Executive Director, foreign location, non-finance trades).
-  - [x] Updated model cascade (`gemini-2.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.1-flash-lite`).
+  - [x] Updated model cascade (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`, `gemini-3.8-flash`, `gemini-3.5-flash`).
 
 ---
 
