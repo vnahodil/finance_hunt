@@ -413,23 +413,29 @@ def rescore_database_jobs(conn: sqlite3.Connection, client, limit: Optional[int]
     print(f"[+] Successfully rescored {updated} jobs in finance_jobs.db!")
 
 
-def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client) -> int:
+def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client, limit: int = None, stop_on_quota_error: bool = True) -> int:
     """
     Finds any jobs evaluated with heuristic fallback (scorer = 'heuristic' or legacy summary)
     and re-evaluates them using Gemini to ensure 100% critical audit coverage.
+    Ordered by match_score DESC so highest-priority candidates are upgraded first.
+    Includes a circuit-breaker to stop early if daily quota is exhausted.
     """
     if not client:
         print("[!] No Gemini client available to rescore heuristic fallbacks.")
         return 0
 
     cur = conn.cursor()
-    cur.execute("""
+    query = """
         SELECT job_hash, title, company, location, url, source, summary, match_score
         FROM jobs
         WHERE scorer = 'heuristic'
            OR summary LIKE '%Heuristic fallback evaluation%'
         ORDER BY match_score DESC
-    """)
+    """
+    if limit:
+        query += f" LIMIT {int(limit)}"
+
+    cur.execute(query)
     rows = cur.fetchall()
     if not rows:
         print("[*] No heuristic fallback jobs to rescore. All jobs are Gemini-verified!")
@@ -437,6 +443,7 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client) -> int:
 
     print(f"[*] Found {len(rows)} heuristic fallback jobs. Re-evaluating via Gemini Flash...")
     rescored = 0
+    consecutive_failures = 0
     for jhash, title, company, location, url, source, old_summary, old_score in rows:
         desc_to_eval = ""
         if url:
@@ -448,6 +455,7 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client) -> int:
 
         ev = evaluate_job(client, title, company, location, desc_to_eval, source)
         if ev.scorer == "gemini":
+            consecutive_failures = 0
             cur.execute("""
                 UPDATE jobs
                 SET match_score = ?, is_relevant = ?, role_category = ?, degree_fit = ?,
@@ -466,6 +474,7 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client) -> int:
             rescored += 1
             print(f"  [Rescored Gemini] {title[:35]} @ {company[:18]} -> was {old_score}/10, now {ev.match_score}/10 ({ev.role_category})")
         else:
+            consecutive_failures += 1
             # If Gemini still failed, update row with clean conservative heuristic
             cur.execute("""
                 UPDATE jobs
@@ -483,6 +492,9 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client) -> int:
             ))
             conn.commit()
             print(f"  [Kept Heuristic] {title[:35]} @ {company[:18]} -> calibrated heuristic {old_score}/10 -> {ev.match_score}/10")
+            if stop_on_quota_error and consecutive_failures >= 2:
+                print("  [!] Gemini quota unavailable or exhausted. Pausing heuristic rescoring pass until next run.")
+                break
         time.sleep(1.0)
 
     print(f"[+] Re-scored {rescored}/{len(rows)} heuristic fallback jobs via Gemini!")

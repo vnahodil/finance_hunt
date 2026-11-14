@@ -93,6 +93,7 @@ def main():
     parser.add_argument("--rescore", action="store_true", help="Re-score all existing jobs using Gemini 2.5 Flash")
     parser.add_argument("--rescore-limit", type=int, default=None, help="Limit number of jobs to rescore")
     parser.add_argument("--rescore-heuristic", action="store_true", help="Re-score only jobs that were evaluated with the heuristic fallback")
+    parser.add_argument("--skip-auto-rescore", action="store_true", help="Skip automatic rescoring of heuristic jobs during crawl")
     parser.add_argument("--dashboard-only", action="store_true", help="Re-generate dashboard and index.html from DB without scraping")
     parser.add_argument("--publish", action="store_true", help="Auto-commit and push updated dashboard/index to GitHub Pages")
     parser.add_argument("--notify", action="store_true", help="Send daily email digest to configured recipients")
@@ -206,6 +207,15 @@ def main():
         if not args.no_browser:
             webbrowser.open(f"file://{cfg.REPORT_PATH}")
         return
+
+    # Auto-rescore existing heuristic fallback jobs if Gemini quota is available
+    if client and not args.skip_auto_rescore:
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM jobs WHERE scorer = 'heuristic' OR summary LIKE '%Heuristic fallback evaluation%'")
+        h_count = cur.fetchone()[0]
+        if h_count > 0:
+            print(f"[*] Found {h_count} heuristic fallback jobs in database. Attempting Gemini verification pass (top priority)...")
+            rescore_heuristic_fallbacks(conn, client, limit=100, stop_on_quota_error=True)
 
     # Financial Scraping Pipeline
     raw_jobs = []
