@@ -20,6 +20,10 @@ dashboard:
 rescore:
 	.venv/bin/python zurich_finance_radar.py --rescore --publish
 
+# Rescore only heuristic fallback jobs with Gemini Flash
+rescore-heuristic:
+	.venv/bin/python zurich_finance_radar.py --rescore-heuristic --publish --no-browser
+
 # Test sending email digest with top recent jobs
 test-email:
 	.venv/bin/python zurich_finance_radar.py --test-email

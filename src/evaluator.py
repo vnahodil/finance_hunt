@@ -438,11 +438,13 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client) -> int:
     print(f"[*] Found {len(rows)} heuristic fallback jobs. Re-evaluating via Gemini Flash...")
     rescored = 0
     for jhash, title, company, location, url, source, old_summary, old_score in rows:
-        desc_to_eval = (old_summary or "").strip()
-        if url and len(desc_to_eval) < 150:
-            body = fetch_job_description_body(url, timeout=2.5)
-            if body and len(body) > len(desc_to_eval):
+        desc_to_eval = ""
+        if url:
+            body = fetch_job_description_body(url, timeout=3.0)
+            if body and len(body) > 80:
                 desc_to_eval = body
+        if not desc_to_eval:
+            desc_to_eval = f"{company} financial position ({location}): {title}. Source: {source}."
 
         ev = evaluate_job(client, title, company, location, desc_to_eval, source)
         if ev.scorer == "gemini":
