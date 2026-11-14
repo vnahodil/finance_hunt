@@ -1,0 +1,1327 @@
+# ============================================================================
+# GREATER ZURICH BUY-SIDE, QUANT, WEALTH & FAMILY OFFICE JOB RADAR
+# Candidate: Director & PM at UBS GWM | MPhil Cambridge | CFA | 170 GRE | Python/R
+# ============================================================================
+
+commute_settings:
+  home_origin: "Glattbrugg"
+  max_commute_mins: 60
+  arrival_time: "08:00"
+
+  # Target geographic location clusters for Swiss financial radar
+  target_locations:
+    zurich_core_and_suburbs:
+      - "Zurich"
+      - "Zürich"
+      - "Glattbrugg"
+      - "Opfikon"
+      - "Wallisellen"
+      - "Zollikon"
+      - "Küsnacht"
+      - "Kusnacht"
+      - "Erlenbach"
+      - "Rüschlikon"
+      - "Ruschlikon"
+      - "Thalwil"
+      - "Horgen"
+      - "Adliswil"
+      - "Schlieren"
+      - "Urdorf"
+      - "Winterthur"
+      - "Baden"
+    schwyz_gold_coast:
+      - "Pfäffikon SZ"
+      - "Pfaeffikon SZ"
+      - "Pfäffikon"
+      - "Pfaeffikon"
+      - "Freienbach"
+      - "Wollerau"
+      - "Bäch"
+      - "Baech"
+      - "Schindellegi"
+      - "Feusisberg"
+      - "Altendorf"
+      - "Lachen"
+    zug_financial_hub:
+      - "Zug"
+      - "Baar"
+      - "Cham"
+      - "Rotkreuz"
+      - "Steinhausen"
+      - "Hünenberg"
+      - "Hunenberg"
+    secondary_commutable_hubs:
+      - "St. Gallen"
+      - "St Gallen"
+      - "Sankt Gallen"
+      - "Vaduz"
+      - "Bendern"
+      - "Schaan"
+      - "Basel"
+      - "Bern"
+      - "Schaffhausen"
+      - "Luzern"
+      - "Lucerne"
+
+  # Door-to-door driving/SBB overrides (in minutes) from Glattbrugg / Opfikon (8152)
+  # Prevents SBB transfer penalties from rejecting Pfäffikon SZ, Zug/Baar, or Lake Zurich hubs
+  driving_overrides:
+    # --- Immediate Local, Airport & Zurich Financial Core (5-18 mins) ---
+    glattbrugg: 5
+    opfikon: 5
+    kloten: 8
+    wallisellen: 10
+    oerlikon: 10
+    zürich oerlikon: 10
+    zurich oerlikon: 10
+    dübendorf: 12
+    dubendorf: 12
+    stettbach: 12
+    dietlikon: 12
+    regensdorf: 14
+    bülach: 15
+    zürich: 15
+    zurich: 15
+    altstetten: 15
+    hardbrücke: 14
+    paradeplatz: 18
+    bahnhofstrasse: 16
+    enge: 18
+    seefeld: 18
+    selnau: 18
+    binz: 18
+    wiedikon: 18
+    volketswil: 15
+
+    # --- Lake Zurich (Gold Coast & Silver Coast) & Limmattal (18-32 mins) ---
+    zollikon: 20
+    küsnacht: 22
+    kusnacht: 22
+    erlenbach: 24
+    herrliberg: 26
+    meilen: 28
+    männedorf: 30
+    stäfa: 32
+    kilchberg: 22
+    rüschlikon: 24
+    ruschlikon: 24
+    thalwil: 25
+    adliswil: 24
+    horgen: 28
+    wädenswil: 30
+    wadenswil: 30
+    richterswil: 32
+    schlieren: 20
+    urdorf: 22
+    dietikon: 22
+    uster: 20
+    greifensee: 16
+
+    # --- Schwyz / Höfe Hedge Fund & Private Markets Corridor (32-42 mins) ---
+    wollerau: 32
+    bäch: 34
+    bäch sz: 34
+    baech: 34
+    freienbach: 35
+    pfäffikon: 35
+    pfäffikon sz: 35
+    pfaeffikon: 35
+    pfaeffikon sz: 35
+    schindellegi: 36
+    feusisberg: 36
+    altendorf: 38
+    lachen: 40
+    lachen sz: 40
+    schwyz: 50
+
+    # --- Zug Low-Tax Financial & Family Office Hub (35-42 mins) ---
+    baar: 35
+    zug: 38
+    steinhausen: 36
+    cham: 38
+    rotkreuz: 40
+    hünenberg: 40
+    hunenberg: 40
+    unterägeri: 45
+    walchwil: 44
+
+    # --- Winterthur, Baden, Schaffhausen, St. Gallen & Liechtenstein (20-55 mins) ---
+    winterthur: 20
+    baden: 25
+    wettingen: 24
+    schaffhausen: 30
+    neuhausen: 30
+    frauenfeld: 30
+    aarau: 38
+    brugg: 30
+    lenzburg: 30
+    st. gallen: 50
+    sankt gallen: 50
+    st gallen: 50
+    luzern: 48
+    lucerne: 48
+    vaduz: 58
+    bendern: 58
+    schaan: 58
+
+    # --- Major Institutional / Pension / Bank Hubs at 60-Min Threshold ---
+    basel: 58
+    bern: 58
+    gümligen: 58
+    fribourg: 60
+
+# ============================================================================
+# 2. AGGREGATOR QUERIES (JobSpy: Indeed CH, LinkedIn, Google Jobs)
+# ============================================================================
+aggregator_queries:
+  # --- Track 1 & 2: Quant, Systematic & Direct Equity PM ---
+  - "Portfolio Manager Equities"
+  - "Equity Portfolio Manager"
+  - "Quantitative Portfolio Manager"
+  - "Systematic Portfolio Manager"
+  - "Quantitative Researcher"
+  - "Quantitative Strategist"
+  - "Alpha Researcher"
+  - "Quantitative Risk"
+  - "Systematic Equities"
+  - "Factor Research"
+  - "Factor Investing"
+  - "Desk Quant"
+  - "Buy-Side Equity Analyst"
+  - "Senior Equity Analyst"
+  - "Quantamental"
+  - "Portfolio Construction"
+  - "Head of Equities"
+  - "Head of Quantitative"
+
+  # --- Track 3 & 4: Manager Selection, Multi-Asset & Mandates ---
+  - "Fund Selection"
+  - "Manager Selection"
+  - "Manager Research"
+  - "External Managers"
+  - "Head of Fund Selection"
+  - "Multi-Asset Portfolio Manager"
+  - "Head of Multi-Asset"
+  - "Head of Discretionary Mandates"
+  - "Asset Allocation Strategist"
+  - "Investment Strategist"
+  - "Chief Investment Officer"
+  - "Deputy CIO"
+
+  # --- Track 5, 6 & 7: UHNW, CEE Coverage & Family Offices ---
+  - "UHNW Investment Specialist"
+  - "Investment Advisor UHNW"
+  - "Portfolio Counselor"
+  - "Client Advisor CEE"
+  - "Relationship Manager CEE"
+  - "Relationship Manager Central Europe"
+  - "Relationship Manager Osteuropa"
+  - "Kundenberater Osteuropa"
+  - "Private Banking Osteuropa"
+  - "Client Advisor Emerging Europe"
+  - "Desk Head CEE"
+  - "Family Office Investment"
+  - "Family Office Portfolio Manager"
+  - "External Asset Manager"
+
+  # --- Track 8, 9, 10, 11 & 12: Institutional, Pensions, Private Markets, WealthTech ---
+  - "Portfolio Solutions"
+  - "Investment Consultant"
+  - "OCIO"
+  - "Portfoliomanager Aktien"
+  - "Leiter Vermögensverwaltung"
+  - "Leiter Kapitalanlagen"
+  - "Anlagechef Pensionskasse"
+  - "Sammelstiftung Portfoliomanager"
+  - "Pensionskasse Anlage"
+  - "WealthTech Product"
+  - "Quantitative Developer Python"
+
+# ============================================================================
+# 2b. JOBS.CH REST API QUERIES (Switzerland's #1 Job Portal)
+# ============================================================================
+jobs_ch_queries:
+  - "portfolio manager"
+  - "equity portfolio manager"
+  - "quantitative portfolio manager"
+  - "quantitative researcher"
+  - "quantitative strategist"
+  - "quantitative analyst"
+  - "quantitative risk"
+  - "systematic equities"
+  - "factor research"
+  - "fund selection"
+  - "manager selection"
+  - "manager research"
+  - "multi-asset"
+  - "asset allocation"
+  - "equity analyst"
+  - "aktienanalyst"
+  - "portfoliomanager"
+  - "portfoliomanager aktien"
+  - "leiter vermögensverwaltung"
+  - "leiter kapitalanlagen"
+  - "anlagechef"
+  - "chief investment officer"
+  - "investment strategist"
+  - "investment specialist"
+  - "investment advisor uhnw"
+  - "client advisor cee"
+  - "relationship manager cee"
+  - "relationship manager osteuropa"
+  - "kundenberater osteuropa"
+  - "osteuropa"
+  - "central eastern europe"
+  - "family office"
+  - "pensionskasse"
+  - "anlagestrategie"
+  - "investment consultant"
+  - "portfolio solutions"
+  - "wealthtech"
+
+# ============================================================================
+# 2c. MYSCIENCE.CH SCIENTIFIC RESEARCH & INDUSTRY QUERIES
+# (Kept for schema compatibility; tuned to Quant Finance, AI/ML & Optimization)
+# ============================================================================
+myscience_queries:
+  - "quantitative finance"
+  - "financial engineering"
+  - "portfolio optimization"
+  - "algorithmic trading"
+  - "machine learning finance"
+  - "data scientist finance"
+  - "quantitative researcher"
+  - "econometrics"
+  - "stochastic"
+
+# ============================================================================
+# 3. WORKDAY DIRECT JSON API ENDPOINTS (Zero-Browser Fast Polling)
+# ============================================================================
+workday_targets:
+  - company: "Julius Baer"
+    default_location: "Zurich"
+    api_url: "https://juliusbaer.wd3.myworkdayjobs.com/wday/cxs/juliusbaer/External/jobs"
+    site_url: "https://juliusbaer.wd3.myworkdayjobs.com/en-US/External"
+    search_terms: ["Portfolio Manager", "Quantitative", "Equity", "Fund", "Mandate", "CEE", "UHNW", "Investment Advisor", "CIO"]
+
+  - company: "Vontobel"
+    default_location: "Zurich"
+    api_url: "https://vontobel.wd3.myworkdayjobs.com/wday/cxs/vontobel/Vontobel_External_Career/jobs"
+    site_url: "https://vontobel.wd3.myworkdayjobs.com/en-US/Vontobel_External_Career"
+    search_terms: ["Portfolio Manager", "Quantitative", "Vescore", "Multi-Asset", "Equity", "Investment Advisor", "Mandates"]
+
+  - company: "BlackRock"
+    default_location: "Zurich"
+    api_url: "https://blackrock.wd1.myworkdayjobs.com/wday/cxs/blackrock/BlackRock_Professional/jobs"
+    site_url: "https://blackrock.wd1.myworkdayjobs.com/en-US/BlackRock_Professional"
+    search_terms: ["Zurich", "Portfolio", "Quantitative", "Systematic", "Multi-Asset", "Index", "Solutions", "Aladdin"]
+
+  - company: "Wellington Management"
+    default_location: "Zurich"
+    api_url: "https://wellington.wd5.myworkdayjobs.com/wday/cxs/wellington/External/jobs"
+    site_url: "https://wellington.wd5.myworkdayjobs.com/en-US/External"
+    search_terms: ["Zurich", "Switzerland", "Portfolio", "Quantitative", "Equity", "Investment", "Wealth"]
+
+  - company: "Invesco"
+    default_location: "Zurich"
+    api_url: "https://invesco.wd1.myworkdayjobs.com/wday/cxs/invesco/IVZ/jobs"
+    site_url: "https://invesco.wd1.myworkdayjobs.com/en-US/IVZ"
+    search_terms: ["Zurich", "Switzerland", "Portfolio", "Quantitative", "Equity", "ETF"]
+
+  - company: "Morningstar"
+    default_location: "Zurich"
+    api_url: "https://morningstar.wd5.myworkdayjobs.com/wday/cxs/morningstar/Americas/jobs"
+    site_url: "https://morningstar.wd5.myworkdayjobs.com/en-US/Americas"
+    search_terms: ["Zurich", "Switzerland", "Manager Research", "Quantitative", "Index", "Methodology"]
+
+  - company: "State Street (SSGA)"
+    default_location: "Zurich"
+    api_url: "https://statestreet.wd1.myworkdayjobs.com/wday/cxs/statestreet/Global/jobs"
+    site_url: "https://statestreet.wd1.myworkdayjobs.com/en-US/Global"
+    search_terms: ["Zurich", "Switzerland", "Portfolio", "Quantitative", "Equity", "Charles River"]
+
+  - company: "Citi (Private Bank & ICG)"
+    default_location: "Zurich"
+    api_url: "https://citi.wd5.myworkdayjobs.com/wday/cxs/citi/2/jobs"
+    site_url: "https://citi.wd5.myworkdayjobs.com/en-US/2"
+    search_terms: ["Zurich", "Private Bank", "UHNW", "Investment Counselor", "Portfolio", "Wealth"]
+
+  - company: "T. Rowe Price"
+    default_location: "Zurich"
+    api_url: "https://troweprice.wd5.myworkdayjobs.com/wday/cxs/troweprice/TRowePrice/jobs"
+    site_url: "https://troweprice.wd5.myworkdayjobs.com/en-US/TRowePrice"
+    search_terms: ["Zurich", "Switzerland", "Portfolio", "Investment", "Quantitative"]
+
+# ============================================================================
+# 3b. DIRECT HEDGE FUND & FINTECH JSON APIs (Recruitee, Teamtailor, Lever, Greenhouse)
+# ============================================================================
+startup_api_targets:
+  - company: "WorldQuant"
+    platform: "greenhouse"
+    slug: "worldquant"
+    default_location: "Zug"
+
+  - company: "Point72"
+    platform: "greenhouse"
+    slug: "point72"
+    default_location: "Zurich"
+
+  - company: "IMC Trading"
+    platform: "greenhouse"
+    slug: "imc"
+    default_location: "Zug"
+
+  - company: "Flow Traders"
+    platform: "greenhouse"
+    slug: "flowtraders"
+    default_location: "Zurich"
+
+  - company: "Fireblocks"
+    platform: "greenhouse"
+    slug: "fireblocks"
+    default_location: "Zurich"
+
+  - company: "Swissblock (Quant Research)"
+    platform: "lever"
+    slug: "swissblock"
+    default_location: "Baar"
+
+  - company: "QuantCo"
+    platform: "lever"
+    slug: "quantco-"
+    default_location: "Zurich"
+
+  - company: "Capco Switzerland (WealthTech & AM Consulting)"
+    platform: "greenhouse"
+    slug: "capco"
+    default_location: "Zurich"
+
+  - company: "21Shares"
+    platform: "greenhouse"
+    slug: "21shares"
+    default_location: "Zurich"
+
+  - company: "Schonfeld"
+    platform: "greenhouse"
+    slug: "schonfeld"
+    default_location: "Zurich"
+
+  - company: "ExodusPoint"
+    platform: "greenhouse"
+    slug: "exoduspoint"
+    default_location: "Zurich"
+
+# ============================================================================
+# 4. SWISS FINANCE ECOSYSTEM HUBS, SPECIALIST BOARDS & BUY-SIDE HEADHUNTERS
+# ============================================================================
+institutes_and_hubs:
+  eth_spinoff_directory_url: "https://entrepreneurship.ethz.ch/startup-stories/explore-startup-portraits-and-success-stories/uebersicht-eth-spin-offs.html"
+  eth_target_departments:
+    - "D-MATH"  # Mathematics (Quantitative Finance Group)
+    - "D-MTEC"  # Management, Technology and Economics
+    - "D-INFK"  # Computer Science (AI / ML)
+    - "D-ITET"  # Information Technology and Electrical Engineering
+
+  portals:
+    # --- Tier-1 Buy-Side, Credential & Banking Portals ---
+    - name: "eFinancialCareers Switzerland (Zurich/Zug)"
+      location: "Zürich"
+      url: "https://www.efinancialcareers.ch/jobs/in-switzerland"
+    - name: "CFA Society Switzerland Job Board"
+      location: "Zürich / Zug"
+      url: "https://www.cfasociety.org/switzerland"
+    - name: "CFA Institute Career Center (Switzerland Filter)"
+      location: "Zürich"
+      url: "https://careers.cfainstitute.org/jobs/switzerland/"
+    - name: "Finews.ch (Swiss Banking & Asset Management)"
+      location: "Zürich"
+      url: "https://www.finews.ch/"
+    - name: "Financejobs.ch - Portfolio Management, Research & Trade"
+      location: "Zürich"
+      url: "https://www.financejobs.ch/en/jobs?professions%5B%5D=10"
+    - name: "Financejobs.ch - Private Banking & Financial Advice"
+      location: "Zürich"
+      url: "https://www.financejobs.ch/en/jobs?professions%5B%5D=11"
+    - name: "Jobup.ch (Geneva Banks Hiring in Zurich)"
+      location: "Zürich"
+      url: "https://www.jobup.ch/en/jobs/?term=portfolio%20manager%20zurich"
+    - name: "Citywire Selector Jobs (Fund & Manager Selection)"
+      location: "Zürich"
+      url: "https://citywire.com/selector"
+
+    # --- Executive ("Kader"), C-Suite & Family Office Portals ---
+    - name: "VSV / ASG (Swiss Association of Wealth Managers)"
+      location: "Zürich"
+      url: "https://www.vsv-asg.ch/de/"
+    - name: "Asset Management Association Switzerland (AMAS)"
+      location: "Basel / Zürich"
+      url: "https://www.am-switzerland.ch/"
+    - name: "Sphere.swiss (Swiss Private Banking & Asset Management Directory)"
+      location: "Genève / Zürich"
+      url: "https://sphere.swiss/"
+    - name: "NZZ Jobs (Banking, Finance & Executive Kaderstellen)"
+      location: "Zürich"
+      url: "https://jobs.nzz.ch/"
+    - name: "Alpha.ch (Swiss Executive & Management Portal)"
+      location: "Zürich"
+      url: "https://www.alpha.ch/en/jobs"
+    - name: "Experteer Switzerland (Executive & Headhunter Mandates)"
+      location: "Zürich"
+      url: "https://www.experteer.ch/"
+    - name: "Aquila Group EAM & Family Office Job Portal"
+      location: "Zürich"
+      url: "https://www.aquila.ch/aquila-ag/jobs/"
+
+    # --- Confidential Buy-Side, Hedge Fund & Family Office Headhunters ---
+    - name: "Selby Jennings Zurich (Quant, Hedge Funds & Wealth)"
+      location: "Zürich"
+      url: "https://www.selbyjennings.ch/jobs"
+    - name: "AP Executive Switzerland (Family Office, Hedge Funds & UHNW)"
+      location: "Zürich / Zug"
+      url: "https://www.ap-executive.com/jobs?location=Switzerland"
+    - name: "Michael Page Switzerland (Banking & Financial Services)"
+      location: "Zürich / Zug"
+      url: "https://www.michaelpage.ch/jobs/banking-financial-services"
+    - name: "Robert Walters Zurich (Banking & Asset Management)"
+      location: "Zürich"
+      url: "https://www.robertwalters.ch/en/jobs.html?locations=Z%C3%BCrich"
+    - name: "Dart Talent & Executive Search (Zurich Buy-Side & Quant)"
+      location: "Zürich"
+      url: "https://www.darttalent.com/jobs/"
+    - name: "PER - Private Equity & Private Markets Recruitment Zurich"
+      location: "Zürich"
+      url: "https://www.per-people.com/jobs"
+    - name: "Norman Alex (Private Banking & Buy-Side Boutique Search)"
+      location: "Zürich / Geneva"
+      url: "https://www.normanalex.com/jobs/"
+    - name: "LHH Switzerland (Banking & Financial Services)"
+      location: "Zürich"
+      url: "https://www.lhh.com/ch/en/search-jobs/"
+
+    # --- Pension Funds (2. Säule) & Institutional Allocators ---
+    - name: "VVP Stellenbörse (Verband Verwaltungsfachleute für Personalvorsorge)"
+      location: "Zürich"
+      url: "https://www.vvp.ch"
+    - name: "Publicjobs.ch (Cantonal/Municipal Pensions & Finance)"
+      location: "Zürich"
+      url: "https://www.publicjobs.ch/jobs?query=finanzen"
+
+    # --- Quant, Python & Data Science Specialist Boards ---
+    - name: "SwissDevJobs (Python & Quant Engineering)"
+      location: "Zürich / Zug"
+      url: "https://swissdevjobs.ch/jobs/Python/all"
+    - name: "SwissDevJobs (Data Science & ML)"
+      location: "Zürich / Zug"
+      url: "https://swissdevjobs.ch/jobs/Data-Science/all"
+    - name: "DataCareer.ch (Swiss Data Science & Quant Jobs)"
+      location: "Zürich"
+      url: "https://www.datacareer.ch/jobs/"
+
+# ============================================================================
+# 5. CURATED DIRECT COMPANY WATCHLIST (ALL ~110 TARGETS ACROSS 8 SECTORS)
+# ============================================================================
+direct_career_pages:
+
+  # --- SECTOR A: Elite Quant Hedge Funds, Multi-Strat Pods & Systematic CTAs ---
+  - company: "Qube Research & Technologies (QRT)"
+    location: "Zürich"
+    sector: "Quant & Systematic Hedge Fund (Python / ML / Alpha Research)"
+    url: "https://www.qube-rt.com/careers/"
+
+  - company: "Millennium Management (MCP Switzerland)"
+    location: "Baar"
+    sector: "Multi-Strategy Hedge Fund Pods (Equities, Quant, RV)"
+    url: "https://career.mlp.com/careers"
+
+  - company: "Man Group / Man AHL"
+    location: "Pfäffikon SZ"
+    sector: "Systematic Quant CTA & Multi-Manager Hedge Fund"
+    url: "https://www.man.com/careers"
+
+  - company: "Citadel"
+    location: "Zürich"
+    sector: "Elite Multi-Strategy & Quantitative Research Hub"
+    url: "https://www.citadel.com/careers/open-opportunities/?location=zurich"
+
+  - company: "Point72"
+    location: "Zürich"
+    sector: "Long/Short Fundamental Equities & Cubist Systematic"
+    url: "https://point72.com/"
+
+  - company: "WorldQuant"
+    location: "Zug"
+    sector: "Quantitative Alpha Research & Systematic PMs"
+    url: "https://www.worldquant.com/career-listing/"
+
+  - company: "Quantica Capital"
+    location: "Schaffhausen"
+    sector: "Systematic Trend-Following & Managed Futures Boutique"
+    url: "https://quantica-capital.com/"
+
+  - company: "Alquant AG"
+    location: "Zürich"
+    sector: "Quantitative Investment Boutique & Systematic Strategies"
+    url: "https://www.alquant.com/about"
+
+  - company: "Progressive Capital Partners"
+    location: "Baar"
+    sector: "Liquid Alternatives & Systematic Trend-Following"
+    url: "https://www.progressivecapital.com/"
+
+  - company: "Ayaltis AG"
+    location: "Zürich"
+    sector: "Fund of Hedge Funds & Relative Value Manager Selection"
+    url: "https://www.ayaltis.com/contact"
+
+  - company: "Alprime Capital"
+    location: "Zürich"
+    sector: "Multi-Manager Alternative Investments Boutique"
+    url: "https://www.alprime.com/"
+
+  - company: "Brevan Howard"
+    location: "Genève / Zürich"
+    sector: "Macro & Systematic Hedge Fund"
+    url: "https://www.brevanhoward.com/careers/"
+
+  - company: "Systematica Investments"
+    location: "Genève / Pfäffikon SZ"
+    sector: "Systematic Quant Hedge Fund (Leda Braga)"
+    url: "https://www.systematica.com/"
+
+  - company: "Harcourt (Vontobel Alternative Investments)"
+    location: "Zürich"
+    sector: "Alternative Investments & Fund of Hedge Funds"
+    url: "https://www.vontobel.com/en-ch/about-vontobel/careers/"
+
+  - company: "Nebula Capital / Nemean Asset Management"
+    location: "Zürich / Zug"
+    sector: "Boutique Hedge Funds & Quantitative Strategies"
+    url: "https://www.nebulacapital.ch/"
+
+  - company: "Flow Traders"
+    location: "Zürich / Remote"
+    sector: "Prop Trading, Market Making & Systematic Quant"
+    url: "https://www.flowtraders.com/careers"
+
+  - company: "Jane Street"
+    location: "Zürich / Remote"
+    sector: "Quantitative Trading & Systematic Research"
+    url: "https://www.janestreet.com/join-jane-street/open-roles/"
+
+  - company: "Optiver"
+    location: "Zürich / Remote"
+    sector: "Quantitative Trading & Financial Engineering"
+    url: "https://optiver.com/working-at-optiver/career-opportunities/"
+
+  - company: "Balyasny Asset Management (BAM - Zurich)"
+    location: "Zürich"
+    sector: "Multi-Strategy Hedge Fund (Quant Alpha, Macro, Long/Short Equities)"
+    url: "https://www.bamfunds.com/careers"
+
+  - company: "Schonfeld Strategic Advisors"
+    location: "Zürich / Remote"
+    sector: "Multi-Manager Platform (Quantitative & Fundamental Equities)"
+    url: "https://www.schonfeld.com/careers"
+
+  - company: "ExodusPoint Capital Management"
+    location: "Zürich / Remote"
+    sector: "Multi-Strategy Hedge Fund (Fixed Income RV & Quantitative Equities)"
+    url: "https://www.exoduspoint.com/careers/"
+
+  # --- SECTOR B: Tier-1 & Pure-Play Private Banks (Mandates, CIO, UHNW & CEE) ---
+  - company: "UBS (Internal & External Board)"
+    location: "Zürich"
+    sector: "GWM CIO, Fundamental Equities, SII Quant, GFO & CEE Desk"
+    url: "https://jobs.ubs.com/TGnewUI/Search/home/HomeWithPreLoad?PageType=JobDetails&partnerid=25008&siteid=5012"
+
+  - company: "Julius Baer"
+    location: "Zürich"
+    sector: "Private Banking, Fund Solutions, Direct Equities & CEE Franchise"
+    url: "https://www.juliusbaer.com/en/careers/job-openings/"
+
+  - company: "LGT Bank (Switzerland & Liechtenstein)"
+    location: "Zürich / Vaduz"
+    sector: "Family-Owned Private Bank, Mandates & Strong CEE Franchise"
+    url: "https://www.lgt.com/global-en"
+
+  - company: "Pictet Group (WM & Pictet AM)"
+    location: "Zürich"
+    sector: "UHNW Private Banking (CEE Desk) & Thematic/Multi-Asset AM"
+    url: "https://www.pictet.com/ch/en/careers"
+
+  - company: "Lombard Odier (WM & LOIM)"
+    location: "Zürich"
+    sector: "Private Banking, External Fund Selection & LOIM Asset Management"
+    url: "https://www.lombardodier.com/home/careers.html"
+
+  - company: "Vontobel (WM, Multi-Asset, Vescore Quant & Equities)"
+    location: "Zürich"
+    sector: "Multi-Boutique Asset Management & Private Banking"
+    url: "https://www.vontobel.com/en-ch/about-vontobel/careers/"
+
+  - company: "EFG International & EFG Asset Management"
+    location: "Zürich"
+    sector: "Global Private Banking, Fund Selection & Discretionary Mandates"
+    url: "https://www.efginternational.com/careers.html"
+
+  - company: "J. Safra Sarasin"
+    location: "Zürich"
+    sector: "Sustainable Equities, Fund Selection & International UHNW"
+    url: "https://www.jsafrasarasin.com/en/home.html"
+
+  - company: "Goldman Sachs Private Wealth Management (PWM)"
+    location: "Zürich"
+    sector: "Ultra-High-Net-Worth Advisory & Portfolio Solutions"
+    url: "https://higher.gs.com/results?LOCATION=Zurich"
+
+  - company: "J.P. Morgan Private Bank & JPMAM"
+    location: "Zürich"
+    sector: "UHNW Portfolio Counselor, Wealth Advisory & Asset Management"
+    url: "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/requisitions?location=Zurich%2C+ZH%2C+Switzerland"
+
+  - company: "HSBC Global Private Banking"
+    location: "Zürich"
+    sector: "UHNW Investment Counseling & International Wealth"
+    url: "https://www.hsbc.com/careers/find-a-job?location=Switzerland"
+
+  - company: "Deutsche Bank Wealth Management & DWS"
+    location: "Zürich"
+    sector: "International UHNW & DWS Institutional Asset Management"
+    url: "https://careers.db.com/professionals/search-roles/#/professional/results?country=Switzerland"
+
+  - company: "BNP Paribas Wealth & Asset Management"
+    location: "Zürich"
+    sector: "UHNW Private Banking & Institutional Asset Management"
+    url: "https://group.bnpparibas/en/careers/all-job-offers/switzerland"
+
+  - company: "Rothschild & Co Bank AG"
+    location: "Zürich"
+    sector: "Direct Equity Portfolio Management & UHNW Wealth Management"
+    url: "https://www.rothschildandco.com/en/careers/"
+
+  - company: "Union Bancaire Privée (UBP)"
+    location: "Zürich"
+    sector: "Private Banking (CEE/International) & Alternative/Equity AM"
+    url: "https://www.ubp.com/en/about-us/careers/experienced-professionals"
+
+  - company: "Bergos AG"
+    location: "Zürich"
+    sector: "Independent Private Bank (Entrepreneurs, CEE & Multi-Asset)"
+    url: "https://www.bergos.ch/en/careers/"
+
+  - company: "Maerki Baumann & Co. AG"
+    location: "Zürich"
+    sector: "Modular Discretionary Mandates & Tech-Forward Private Bank"
+    url: "https://www.maerki-baumann.ch/de"
+
+  - company: "Rahn+Bodmer Co."
+    location: "Zürich"
+    sector: "Zurich Private Bank (Direct Equities & Investment Advisory)"
+    url: "https://www.rahnbodmer.ch/en/career/"
+
+  - company: "Reichmuth & Co"
+    location: "Luzern / Zürich"
+    sector: "Private Bank, Multi-Manager & Infrastructure Investments"
+    url: "https://www.reichmuthco.ch/en/about-us/career/"
+
+  - company: "Reyl Intesa Sanpaolo"
+    location: "Zürich"
+    sector: "Entrepreneur & Family Office Private Banking"
+    url: "https://www.intesasanpaolowm.ch/"
+
+  - company: "Berenberg Switzerland"
+    location: "Zürich"
+    sector: "Wealth Management, European Equities & Quantitative Overlay"
+    url: "https://careers.berenberg.com/de"
+
+  - company: "Bordier & Cie"
+    location: "Zürich / Genève"
+    sector: "Swiss Private Banking & Discretionary Mandates"
+    url: "https://www.bordier.com/"
+
+  - company: "Gonet & Cie"
+    location: "Zürich / Genève"
+    sector: "Private Banking & Wealth Management Boutique"
+    url: "https://www.gonet.ch/en/careers/"
+
+  - company: "Mirabaud Group"
+    location: "Zürich / Genève"
+    sector: "Private Banking, Wealth Management & Asset Management"
+    url: "https://www.mirabaud.com/en/careers"
+
+  - company: "Banque Cantonale de Genève (BCGE Zurich CEE)"
+    location: "Zürich"
+    sector: "Cantonal Bank Private Banking (Dedicated CEE & International Wealth Desk)"
+    url: "https://www.bcge.ch/en/careers"
+
+  - company: "CBH Compagnie Bancaire Helvétique"
+    location: "Zürich / Genève"
+    sector: "Family-Owned Swiss Private Bank (Specialist CEE & International Wealth)"
+    url: "https://www.cbhbank.com/careers/"
+
+  - company: "PKB Privatbank"
+    location: "Zürich / Lugano"
+    sector: "Private Banking, Discretionary Portfolios & Cross-Border Wealth"
+    url: "https://www.pkb.ch/en/careers"
+
+  - company: "Coutts / NatWest Wealth Management"
+    location: "Zürich"
+    sector: "UHNW Wealth Management & Private Client Portfolio Solutions"
+    url: "https://www.coutts.com/careers.html"
+
+  # --- SECTOR C: Institutional Asset Managers (Domestic Giants & Global Hubs) ---
+  - company: "Swisscanto / Zürcher Kantonalbank (ZKB Asset Management)"
+    location: "Zürich"
+    sector: "Quantitative Equities, Factor Indexing, Multi-Asset & Active Equities"
+    url: "https://www.zkb.ch/de/ueber-uns/karriere/offene-stellen.html"
+
+  - company: "Swiss Life Asset Managers"
+    location: "Zürich"
+    sector: "Quantitative Equities, Multi-Asset, Manager Selection & Infrastructure"
+    url: "https://www.swisslife-am.com/en/home/careers.html"
+
+  - company: "GAM Investments"
+    location: "Zürich"
+    sector: "Active Equities, Multi-Asset & Systematic Strategies"
+    url: "https://www.gam.com/en/careers"
+
+  - company: "Robeco Switzerland"
+    location: "Zürich"
+    sector: "Thematic Equities, Sustainable Investing & Quantitative Equities"
+    url: "https://www.robeco.com/en-int/careers"
+
+  - company: "Schroders & Schroders Capital"
+    location: "Zürich"
+    sector: "Multi-Asset, Equities & Private Markets Portfolio Solutions"
+    url: "https://www.schroders.com/en/global/individual/about-us/careers/"
+
+  - company: "Fisch Asset Management"
+    location: "Zürich"
+    sector: "Convertible Bonds, Multi-Asset & Quantitative Momentum Boutique"
+    url: "https://www.fam.ch/en/about-us/career/"
+
+  - company: "Bellevue Group / Bellevue Asset Management"
+    location: "Küsnacht"
+    sector: "Specialty Healthcare, Entrepreneur & Niche Equity Boutique"
+    url: "https://www.bellevue.ch/ch-en/about-us/career"
+
+  - company: "Amundi Switzerland (incl. Amundi Alpha Associates)"
+    location: "Zürich"
+    sector: "ETF/Indexing, Multi-Asset & Private Markets Multi-Manager"
+    url: "https://jobs.amundi.com/jobs"
+
+  - company: "Allianz Global Investors (AllianzGI)"
+    location: "Zürich"
+    sector: "Institutional Multi-Asset, Equities & Risklab"
+    url: "https://www.allianzgi.com/en/careers"
+
+  - company: "Vanguard Switzerland"
+    location: "Zürich"
+    sector: "Index/Quantitative Portfolio Solutions & Institutional Coverage"
+    url: "https://www.vanguardjobs.com/job-search-results/?location=Zurich%2C%20Switzerland"
+
+  - company: "Fidelity International"
+    location: "Zürich"
+    sector: "Active Equities & Institutional Portfolio Solutions"
+    url: "https://careers.fidelityinternational.com/"
+
+  - company: "Morgan Stanley IM / Investment Management"
+    location: "Zürich"
+    sector: "Institutional Asset Management & Solutions"
+    url: "https://www.morganstanley.com/about-us/careers"
+
+  - company: "DWS Switzerland"
+    location: "Zürich"
+    sector: "Institutional Asset Management & Passive/Active Solutions"
+    url: "https://careers.db.com/professionals/search-roles/#/professional/results?country=Switzerland"
+
+  # --- SECTOR D: Equity, Quant & Multi-Asset Boutiques (Pfäffikon SZ / Zug / Zurich) ---
+  - company: "2Xideas AG"
+    location: "Pfäffikon SZ"
+    sector: "Systematic + Fundamental Global Equity Boutique (Custom Tech Stack)"
+    url: "https://www.2xideas.com/careers"
+
+  - company: "Hérens Quality Asset Management (HQAM)"
+    location: "Pfäffikon SZ"
+    sector: "Quantitative + Fundamental Quality Equity Selection Boutique"
+    url: "https://hqam.ch/en/about-us/"
+
+  - company: "OLZ AG"
+    location: "Bern / Zürich"
+    sector: "Quantitative Minimum-Variance & Factor Optimization Equities/Multi-Asset"
+    url: "https://www.olz.ch/ueber-uns/jobs"
+
+  - company: "Finreon AG"
+    location: "St. Gallen / Zürich"
+    sector: "ETH/HSG Spin-Off Quantitative Multi-Factor & Risk-Based Indexing"
+    url: "https://www.finreon.ch/en/about-us/career"
+
+  - company: "Zugerberg Finanz AG"
+    location: "Zug"
+    sector: "Independent Active Equity & Multi-Asset Mandate Manager"
+    url: "https://www.zugerberg-finanz.ch/ueber-uns/offene-stellen/"
+
+  - company: "Albin Kistler AG"
+    location: "Zürich"
+    sector: "Direct Equity & Bond Discretionary Asset Management"
+    url: "https://www.albinkistler.ch/de/ueber-uns/karriere"
+
+  - company: "Alpinum Investment Management"
+    location: "Zürich"
+    sector: "Multi-Asset, Credit & Alternative Manager Selection Boutique"
+    url: "https://www.alpinumim.com/about-us/"
+
+  - company: "zCapital AG"
+    location: "Zug"
+    sector: "Swiss Equities Specialist Boutique"
+    url: "https://www.zcapital.ch/en/portrait/team/"
+
+  - company: "Globalance Bank"
+    location: "Zürich"
+    sector: "Data-Driven Thematic Equities & Future-Oriented Private Bank"
+    url: "https://www.globalance.com/en/about-us/open-positions/"
+
+  - company: "3V Asset Management"
+    location: "Schindellegi"
+    sector: "Independent Equity & Multi-Asset Boutique"
+    url: "https://www.3v-am.com/"
+
+  - company: "Classic Fund Management"
+    location: "Bäch SZ"
+    sector: "Fundamental Value Equity Boutique"
+    url: "https://www.classicfund.ch/"
+
+  - company: "Alpina Capital AG"
+    location: "Baar"
+    sector: "Independent Asset Management & Fund Boutique"
+    url: "https://www.alpinacapital.com/"
+
+  - company: "ANREPA Asset Management"
+    location: "Baar / Zug"
+    sector: "Independent Asset Management & Investment Solutions"
+    url: "https://deepresearchfund.ch/"
+
+  - company: "Abaris Investment Management"
+    location: "Bäch SZ"
+    sector: "Asset Management & Investment Advisory Boutique"
+    url: "https://www.abaris.ch/"
+
+  - company: "Apex Asset Management"
+    location: "Pfäffikon SZ"
+    sector: "Independent Asset Management & Portfolio Strategies"
+    url: "https://www.apex-am.com/"
+
+  # --- SECTOR E: Private Markets, Hedge Fund Allocators & Alternative Giants ---
+  - company: "Partners Group"
+    location: "Baar"
+    sector: "Private Markets Titan (Portfolio Solutions, Quant Risk & Evergreen Funds)"
+    url: "https://www.partnersgroup.com/en/careers/welcome"
+
+  - company: "LGT Capital Partners"
+    location: "Pfäffikon SZ"
+    sector: "$100bn+ Multi-Manager, Hedge Fund Selection, Multi-Asset & Private Markets"
+    url: "https://www.lgtcp.com/career"
+
+  - company: "StepStone Group (formerly Swiss Capital)"
+    location: "Zürich"
+    sector: "Private Markets Allocator & Quantitative Portfolio Analytics (SPI)"
+    url: "https://www.stepstonegroup.com/current-opportunities/"
+
+  - company: "Unigestion"
+    location: "Zürich"
+    sector: "Risk-Managed Quantitative Equities, Multi-Asset & Private Equity"
+    url: "https://unigestion.com/"
+
+  - company: "Hamilton Lane"
+    location: "Zug"
+    sector: "Global Private Markets Solutions & Evergreen Portfolios"
+    url: "https://www.hamiltonlane.com/en-us/careers"
+
+  - company: "Montana Capital Partners (PGIM)"
+    location: "Baar"
+    sector: "Private Equity Secondaries & Portfolio Analytics"
+    url: "https://www.montana-capital-partners.eu/team/"
+
+  - company: "Capital Dynamics"
+    location: "Zug"
+    sector: "Global Private Assets & Portfolio Risk Management"
+    url: "https://www.capdyn.com/about-us/careers/"
+
+  - company: "Sussex Partners"
+    location: "Zürich"
+    sector: "Institutional Hedge Fund Advisory & Manager Research"
+    url: "https://www.sussexpartners.com/"
+
+  - company: "BlueOrchard Finance (Schroders)"
+    location: "Zürich"
+    sector: "Impact Investing, Emerging Markets & Multi-Asset"
+    url: "https://www.blueorchard.com/about-us/careers/"
+
+  - company: "Redalpine Venture Partners"
+    location: "Zürich"
+    sector: "Tier-1 European Tech & AI Venture Capital"
+    url: "https://www.redalpine.com/team"
+
+  - company: "Lakestar"
+    location: "Zürich"
+    sector: "Global Tech & FinTech Venture Capital"
+    url: "https://www.lakestar.com/"
+
+  - company: "Adveq (Schroders Capital)"
+    location: "Zürich"
+    sector: "Private Equity Solutions & Secondaries"
+    url: "https://www.schroders.com/en/global/individual/about-us/careers/"
+
+  - company: "Wingman Ventures"
+    location: "Zürich"
+    sector: "Swiss Early-Stage Tech & AI Venture Capital"
+    url: "https://www.wingman.ch/"
+
+  - company: "Emerald Technology Ventures"
+    location: "Winterthur / Zürich"
+    sector: "Industrial Tech, Climate & Energy Venture Capital"
+    url: "https://emerald.vc/"
+
+  - company: "Momenta"
+    location: "Baar / Zug"
+    sector: "Industrial Impact & Digital Venture Capital"
+    url: "https://www.momenta.one/"
+
+  # --- SECTOR F: Multi-Family Offices (MFOs), SFOs & EAMs (incl. CEE Focus) ---
+  - company: "FINAD AG"
+    location: "Zürich"
+    sector: "Multi-Family Office (Strong Central Europe / Entrepreneur Focus)"
+    url: "https://finad.com/en/careers"
+
+  - company: "Amicum Capital AG"
+    location: "Zürich"
+    sector: "Multi-Family Office (Dedicated Eastern & Central Europe Focus)"
+    url: "https://www.amicum-capital.com/"
+
+  - company: "Exandas AG"
+    location: "Zürich"
+    sector: "Multi-Family Office (CEE, UK & Swiss Entrepreneurial Families)"
+    url: "https://exandas.ch/"
+
+  - company: "Trigon Family Office"
+    location: "Zürich"
+    sector: "Multi-Family Office (Founded by Ex-Pictet CEE/International Leaders)"
+    url: "https://www.trigon.ch/"
+
+  - company: "One Family Office"
+    location: "Zürich"
+    sector: "Major Czech/Slovak Multi-Family Office Expanding into Zurich"
+    url: "https://onefamilyoffice.eu/"
+
+  - company: "Consillium"
+    location: "Zürich"
+    sector: "Czech Billionaire SFO / MFO with Ex-UBS Zurich Partners"
+    url: "https://www.consillium.cz/"
+
+  - company: "Corecam Family Office"
+    location: "Zürich"
+    sector: "Large International Multi-Family Office (Liquid & Direct Investments)"
+    url: "https://corecam.com/"
+
+  - company: "Marcuard Heritage"
+    location: "Zürich"
+    sector: "Global Multi-Family Office & Discretionary Portfolio Management"
+    url: "https://marcuardheritage.com/careers/"
+
+  - company: "Stonehage Fleming"
+    location: "Zürich"
+    sector: "Global Multi-Family Office & Outsourced CIO"
+    url: "https://www.stonehagefleming.com/careers"
+
+  - company: "Survista Financial Advisors"
+    location: "Zürich"
+    sector: "Independent Multi-Family Office & Manager Selection"
+    url: "https://www.survista.ch/"
+
+  - company: "CORUM Vermögensverwaltung"
+    location: "Zürich"
+    sector: "Boutique Multi-Family Office & Wealth Management"
+    url: "https://www.corumag.ch/"
+
+  - company: "Kendris AG"
+    location: "Zürich"
+    sector: "Multi-Family Office & Wealth Structuring"
+    url: "https://www.kendris.com/en/"
+
+  - company: "Treuco AG"
+    location: "Zürich"
+    sector: "Established Zurich Multi-Family Office & Asset Manager"
+    url: "https://www.treuco.ch/"
+
+  - company: "Belvédère Asset Management"
+    location: "Zürich"
+    sector: "Independent Wealth Management, Family Office & Fund Solutions"
+    url: "https://www.belvedere-am.com/ueber-uns/karriere/"
+
+  - company: "Jacobs Holding AG"
+    location: "Zürich"
+    sector: "Premier Single Family Office / Institutional Investment Holding"
+    url: "https://www.jacobsholding.com/"
+
+  - company: "Corient"
+    location: "Zürich / Neuchâtel"
+    sector: "Global Multi-Family Office & Wealth Management"
+    url: "https://www.corient.com/careers"
+
+  - company: "Mandaris AG"
+    location: "Zürich / Basel"
+    sector: "Multi-Family Office & Fiduciary Services"
+    url: "https://mandaris.com/de/"
+
+  - company: "Aquila AG"
+    location: "Zürich"
+    sector: "Platform & Network for 90+ Independent EAMs/MFOs"
+    url: "https://www.aquila.ch/aquila-ag/jobs/"
+
+  - company: "IHAG Holding"
+    location: "Zürich"
+    sector: "Single Family Office & Private Investment Holding"
+    url: "https://www.ihag.ch/"
+
+  - company: "BHS Verwaltungs AG (Beisheim Group)"
+    location: "Baar / Zürich"
+    sector: "Single Family Office & Direct Asset Allocator"
+    url: "https://www.beisheim.com/"
+
+  # --- SECTOR G: Swiss Pension Funds (Pensionskassen) & Insurance Asset Owners ---
+  - company: "Swiss Re (Group Asset Management)"
+    location: "Zürich"
+    sector: "Reinsurance Balance-Sheet Asset Allocation, Quant Risk & External Managers"
+    url: "https://careers.swissre.com/search/?q=&locationsearch=Zurich"
+
+  - company: "Zurich Insurance Group (Investment Management)"
+    location: "Zürich"
+    sector: "Global Insurance SAA, ALM & External Manager Selection"
+    url: "https://www.careers.zurich.com/search/?q=Investment&locationsearch=Switzerland"
+
+  - company: "BVK (Personalvorsorge des Kantons Zürich)"
+    location: "Zürich"
+    sector: "CHF 40bn+ Public Pension Fund (Equities, Multi-Asset & Manager Selection)"
+    url: "https://bvk.ch/de/"
+
+  - company: "Pensionskasse Stadt Zürich (PKZ)"
+    location: "Zürich"
+    sector: "CHF 20bn+ Municipal Pension Fund (Asset Management & External Mandates)"
+    url: "https://www.pkzh.ch/de.html"
+
+  - company: "Migros-Pensionskasse (MPK)"
+    location: "Schlieren"
+    sector: "CHF 30bn Corporate Pension Fund (Internal Equities & Global Mandates)"
+    url: "https://www.mpk.ch/"
+
+  - company: "Profond Vorsorgeeinrichtung"
+    location: "Zürich"
+    sector: "Large Equity-Heavy Collective Pension Foundation"
+    url: "https://www.profond.ch/"
+
+  - company: "AXA Switzerland (Asset Management)"
+    location: "Winterthur"
+    sector: "Insurance & Collective Foundation Asset Management"
+    url: "https://www.axa.ch/en/private-customers.html"
+
+  - company: "Baloise Asset Management"
+    location: "Zürich / Basel"
+    sector: "Insurance & Third-Party Multi-Asset / Equity Portfolio Management"
+    url: "https://www.baloise.ch/"
+
+  - company: "Helvetia Asset Management"
+    location: "St. Gallen / Basel"
+    sector: "Institutional Insurance & Pension Asset Management"
+    url: "https://www.helvetia.com/ch/web/de/ueber-uns/karriere.html"
+
+  - company: "PUBLICA (Pensionskasse des Bundes)"
+    location: "Bern"
+    sector: "CHF 40bn+ Federal Pension Fund Asset Management"
+    url: "https://www.publica.ch/de"
+
+  - company: "SBB Pensionskasse"
+    location: "Bern"
+    sector: "Institutional Pension Asset Management & Manager Selection"
+    url: "https://www.pksbb.ch/de/"
+
+  - company: "SUVA (Abteilung Kapitalanlagen)"
+    location: "Luzern"
+    sector: "CHF 55bn+ Institutional Asset Owner (Equities, Quant, External Managers)"
+    url: "https://jobs.suva.ch/"
+
+  - company: "Vita Sammelstiftung"
+    location: "Zürich"
+    sector: "Collective Pension Foundation & Institutional Asset Management"
+    url: "https://www.vita.ch/"
+
+  - company: "compenswiss (Fonds de compensation AVS/AI/APG)"
+    location: "Genève / Zürich"
+    sector: "CHF 40bn+ Swiss Federal Social Security Reserve Fund (Equities & Multi-Asset)"
+    url: "https://www.compenswiss.ch/en/career"
+
+  - company: "Generali Switzerland (Adliswil HQ)"
+    location: "Adliswil"
+    sector: "Insurance Balance-Sheet Asset Allocation & Portfolio Management"
+    url: "https://www.generali.ch/"
+
+  - company: "PartnerRe (Zurich Financial Center)"
+    location: "Zürich"
+    sector: "Global Reinsurance Capital Allocation & Portfolio Investments"
+    url: "https://www.partnerre.com/careers/"
+
+  - company: "Asga Pensionskasse"
+    location: "St. Gallen / Zürich"
+    sector: "CHF 25bn+ Independent Swiss Collective Pension Foundation"
+    url: "https://www.asga.ch/ueber-uns/karriere/"
+
+  - company: "GastroSocial Pensionskasse"
+    location: "Aarau / Zürich"
+    sector: "CHF 10bn+ Institutional Pension Fund & Capital Allocations"
+    url: "https://gastrosocial.ch/"
+
+  # --- SECTOR H: WealthTech, AssetTech, Financial Engineering & Consultants ---
+  - company: "MSCI Zurich"
+    location: "Zürich"
+    sector: "Factor Models, Barra Optimizer, Index Research & Quantitative Analytics"
+    url: "https://careers.msci.com/"
+
+  - company: "Bloomberg Zurich"
+    location: "Zürich"
+    sector: "PORT Enterprise, Quantitative Portfolio Analytics & Financial Engineering"
+    url: "https://www.bloomberg.com/company/careers/working-here/europe-middle-east-and-africa/zurich/"
+
+  - company: "PPCmetrics AG"
+    location: "Zürich"
+    sector: "#1 Swiss Institutional Investment Consultant & Manager Selection Advisor"
+    url: "https://www.ppcmetrics.ch/de/ueber-uns/karriere/"
+
+  - company: "Mercer Switzerland (Marsh McLennan)"
+    location: "Zürich"
+    sector: "Global OCIO, Institutional Manager Research & Pension Consulting"
+    url: "https://careers.marshmclennan.com/global/en/search-results?keywords=Mercer&location=Zurich"
+
+  - company: "WTW (Willis Towers Watson Investments)"
+    location: "Zürich"
+    sector: "Institutional Investment Consulting & Delegated Portfolio Management"
+    url: "https://careers.wtwco.com/jobs/search?country_codes%5B%5D=CH"
+
+  - company: "Complementa AG"
+    location: "Zürich / St. Gallen"
+    sector: "Institutional Investment Controlling, SAA & Manager Selection"
+    url: "https://complementa.ch/"
+
+  - company: "c-alm AG"
+    location: "Zürich / St. Gallen"
+    sector: "Quantitative Asset-Liability Management & Pension Consulting"
+    url: "https://www.c-alm.ch/karriere"
+
+  - company: "vestr AG"
+    location: "Zürich"
+    sector: "Active Portfolio Management Platform (AMC Engine)"
+    url: "https://www.vestr.com/careers"
+
+  - company: "GenTwo"
+    location: "Zürich"
+    sector: "Assetization & Active Portfolio Structuring Platform"
+    url: "https://www.gentwo.com/careers"
+
+  - company: "Altoo AG"
+    location: "Baar"
+    sector: "UHNW & Single Family Office Digital Wealth Platform"
+    url: "https://altoo.io/careers/"
+
+  - company: "Additiv AG"
+    location: "Zürich"
+    sector: "Orchestrated WealthTech & Hybrid Advisory Platform"
+    url: "https://www.additiv.com/careers/"
+
+  - company: "Etops AG"
+    location: "Altendorf"
+    sector: "Asset & Wealth Management Portfolio Technology"
+    url: "https://www.etops.com"
+
+  - company: "True Wealth AG"
+    location: "Zürich"
+    sector: "Quantitative Digital Wealth & Automated Portfolio Rebalancing"
+    url: "https://www.truewealth.ch/en/jobs"
+
+  - company: "Selma Finance"
+    location: "Zürich"
+    sector: "Digital Investment Advisor & WealthTech"
+    url: "https://www.selma.com/"
+
+  - company: "Descartes Finance"
+    location: "Zürich"
+    sector: "Quantitative WealthTech & Independent Digital Private Banking"
+    url: "https://www.decarte.ch/"
+
+  - company: "Avaloq"
+    location: "Zürich"
+    sector: "Banking Software, WealthTech & Core Investment Engine"
+    url: "https://www.avaloq.com/careers"
+
+  - company: "Finnova AG"
+    location: "Zürich / Lenzburg"
+    sector: "Swiss Banking Software & WealthTech Solutions"
+    url: "https://www.finnova.com/de/karriere"
+
+  - company: "Findependent"
+    location: "Zürich"
+    sector: "Digital Investment App & Automated ETF Solutions"
+    url: "https://findependent.ch/"
+
+  - company: "Inyova Impact Investing"
+    location: "Zürich"
+    sector: "Personalized Impact Investing & Digital Wealth Platform"
+    url: "https://inyova.ch/en/careers/"
+
+  - company: "SIX Group"
+    location: "Zürich"
+    sector: "Swiss Stock Exchange, Financial Information, Index Engineering & Post-Trade"
+    url: "https://www.six-group.com/en/careers.html"
+
+  - company: "Sygnum Bank"
+    location: "Zürich"
+    sector: "FINMA-Regulated Digital Asset Bank & Institutional Crypto Asset Management"
+    url: "https://www.sygnum.com/careers/"
+
+  - company: "AMINA Bank (formerly SEBA)"
+    location: "Zug"
+    sector: "FINMA-Regulated Crypto & Traditional Investment Banking & Asset Management"
+    url: "https://aminagroup.com/careers/"
+
+  - company: "Bitcoin Suisse"
+    location: "Zug / Baar"
+    sector: "Swiss Pioneer Crypto Brokerage, Staking & Institutional Asset Solutions"
+    url: "https://www.bitcoinsuisse.com/careers"
+
+  - company: "21Shares"
+    location: "Zürich"
+    sector: "World Leader in Crypto ETPs, Quantitative Crypto Indexes & Asset Management"
+    url: "https://21shares.com/careers"
+
+  - company: "Crypto Finance Group"
+    location: "Zürich"
+    sector: "FINMA-Regulated Digital Asset Trading & Custody (Deutsche Börse Group)"
+    url: "https://www.crypto-finance.com/"
+
+# ============================================================================
+# 6. KEYWORD REGEX PATTERNS FOR LINK PRE-FILTERING
+# (Inverted from the Chemistry config: now promotes Director/VP/Head/PM/Quant/UHNW)
+# ============================================================================
+filters:
+  positive_regex: "(portfolio\\s*manager|portfoliomanager|quant(itative)?|systematic|equity|equities|aktien|fund\\s*select|manager\\s*(select|research|due\\s*diligence)|external\\s*manager|multi[\\s-]*asset|asset\\s*allocation|anlagestrateg|mandat|cio\\b|chief\\s*investment|investment\\s*(specialist|advisor|counselor|director|manager|strategist|consultant|solutions|research|analyst)|uhnw|family\\s*office|cee\\b|central\\s*(and\\s*eastern\\s*)?europe|emerging\\s*europe|client\\s*advisor|relationship\\s*manager|wealth\\s*(manager|advisor|specialist|tech)|wealthtech|assettech|alpha|factor|optimiz|portfolio\\s*(construction|engineering|solutions|analytics)|head\\s*of|team\\s*lead|director|vice\\s*president|\\bvp\\b|executive\\s*director|managing\\s*director|partner|principal|pensionskasse|vermögensverwalt|kapitalanlage|alm\\b|ocio)"
+  negative_regex: "(intern\\b|internship|praktikant|praktikum|trainee|working\\s*student|werkstudent|lehrstelle|schnupperlehre|apprentice|hochschulpraktikant|retail\\s*banking|teller|schalter|call\\s*center|receptionist|chauffeur|facility|housekeeping|plumber|sanitär|heizung|hvac|elektriker|mechaniker|logistik|warehouse|lager|payroll|hr\\s*business\\s*partner|recruiter|talent\\s*acquisition|internal\\s*audit|external\\s*audit|wirtschaftsprüf|tax\\s*accountant|steuerberater|bookkeeper|buchhalter|accountant\\b|accounting\\b|accounts\\s*payable|accounts\\s*receivable|debitoren|kreditoren|sachbearbeiter\\s*rechnungswesen|paralegal\\b|legal\\s*assistant|corporate\\s*assistant|notariat|immobilienbewirtschafter|property\\s*manager|art\\s*advisor|kyc\\s*analyst|aml\\s*investigator|transaction\\s*monitoring|client\\s*onboarding\\s*officer|helpdesk|1st\\s*level\\s*support|mainframe|cobol|ios\\s*developer|android\\s*developer|scrum\\s*master|laboratory|chemist|biotech)"
+
+# ============================================================================
+# 7. DAILY EMAIL NOTIFICATIONS
+# ============================================================================
+notifications:
+  enabled: true
+  min_score: 7
+  max_email_jobs: 10
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_user: ""
+  dashboard_url: "https://vnahodil.github.io/finance_hunt/"
+  recipients: []

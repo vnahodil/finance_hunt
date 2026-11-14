@@ -1,0 +1,9 @@
+CANDIDATE CURRICULUM VITAE (CV) [TEMPLATE]
+
+NAME: Candidate
+CONTACT: [Private - configured locally]
+
+================================================================================
+EXECUTIVE PROFILE
+================================================================================
+Senior Investment Professional and Quantitative Portfolio Manager with institutional tenure across Global Wealth Management and Asset Management. Academic foundation from University of Cambridge (Master's in Finance & Economics), CFA Charterholder, and GRE Quantitative 170/170. Multi-billion dollar portfolio management track record across discretionary equity mandates, multi-asset solutions, and quantitative factor modeling in Python/R.

@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zurich Finance, Asset Management & Wealth Management Job Radar</title>
+<style>
+    :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8; --border: #334155; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+    h1 { margin: 0; font-size: 1.5rem; }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; background: var(--card); padding: 14px; border-radius: 10px; border: 1px solid var(--border); }
+    input, select, button { background: #0f172a; color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 10px; overflow: hidden; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { background: #0f172a; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    th.col-fit { width: 55px; min-width: 55px; }
+    th.col-role { width: 38%; min-width: 340px; }
+    th.col-co { width: 12%; min-width: 120px; }
+    th.col-commute { width: 13%; min-width: 130px; }
+    th.col-cat { width: 15%; min-width: 145px; }
+    th.col-degree { width: 10%; min-width: 105px; }
+    th.col-found { width: 125px; min-width: 125px; }
+    th.col-action { width: 95px; min-width: 95px; }
+    td.col-action-cell { padding: 10px 8px; }
+    .col-found-cell { white-space: nowrap; font-size: 0.84rem; }
+    th.sortable { cursor: pointer; user-select: none; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    th.sortable:hover { background: #1e293b; color: var(--accent); }
+    .sort-icon { font-size: 0.72rem; margin-left: 4px; opacity: 0.45; display: inline-block; vertical-align: middle; }
+    th.asc .sort-icon, th.desc .sort-icon { opacity: 1; color: var(--accent); }
+    tr:hover { background: rgba(56, 189, 248, 0.06); }
+    tr.applied { background: rgba(34, 197, 94, 0.12) !important; }
+    .job-title { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 0.98rem; }
+    .job-title:hover { text-decoration: underline; }
+    .job-summary { color: var(--muted); font-size: 0.82rem; margin-top: 5px; line-height: 1.42; }
+    .sum-row { margin-top: 4px; display: flex; align-items: baseline; gap: 6px; }
+    .sum-tag { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+    .sum-track { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .sum-fit { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .sum-gap { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+    .cat-tag { display: inline-block; margin-bottom: 4px; }
+    .cat-track { color: var(--muted); font-size: 0.78rem; line-height: 1.35; margin-top: 5px; }
+    .cat-track .sum-tag { font-size: 0.65rem; padding: 1px 5px; margin-right: 3px; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; }
+    .score-high { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .score-med { background: rgba(250, 204, 21, 0.2); color: #facc15; }
+    .score-low { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+    .commute-fast { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+    .commute-mid { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; }
+    .commute-far { background: rgba(249, 115, 22, 0.15); color: #fdba74; }
+    .tag { background: #334155; padding: 3px 7px; border-radius: 4px; font-size: 0.78rem; }
+    .muted { color: var(--muted); }
+    .btn-action, .btn-prompt, .btn-hide {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 0.76rem;
+        padding: 5px 4px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        white-space: nowrap;
+        border: 1px solid transparent;
+        transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-action { background: #1e3a8a; border-color: #1d4ed8; color: #fff; margin-bottom: 4px; }
+    .btn-action:hover { background: #2563eb; }
+    tr.applied .btn-action { background: #15803d; border-color: #16a34a; color: #fff; }
+    tr.applied .btn-action:hover { background: #16a34a; }
+    .btn-prompt { background: #0284c7; border-color: #0369a1; color: #fff; margin-bottom: 4px; }
+    .btn-prompt:hover { background: #0ea5e9; }
+    .btn-hide { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.35); color: #f87171; margin-bottom: 0; }
+    .btn-hide:hover { background: rgba(239, 68, 68, 0.28); border-color: rgba(239, 68, 68, 0.5); }
+    .btn-unhide { background: rgba(14, 165, 233, 0.2) !important; border-color: #38bdf8 !important; color: #38bdf8 !important; margin-bottom: 0; }
+    .btn-unhide:hover { background: rgba(14, 165, 233, 0.35) !important; }
+    #toggleHiddenBtn { cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    #toggleHiddenBtn.active-hidden-view { background: rgba(239, 68, 68, 0.22); border-color: #f87171; color: #fecaca; font-weight: 600; }
+    tr.is-hidden-row { opacity: 0.92; border-left: 3px solid #f87171; }
+    .mobile-only-control { display: none; }
+
+    @media (max-width: 860px) {
+        body {
+            padding: 12px;
+        }
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding-bottom: 12px;
+        }
+        h1 {
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+        .controls {
+            padding: 10px;
+            gap: 8px;
+        }
+        .controls input,
+        .controls select,
+        .controls button {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
+            padding: 10px 12px;
+        }
+        .mobile-only-control {
+            display: block;
+        }
+
+        /* Responsive Card Transformation */
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+        thead {
+            display: none;
+        }
+        tr {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            padding: 16px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        tr.is-hidden-row {
+            border-left: 4px solid #f87171 !important;
+        }
+        tr.applied {
+            border-left: 4px solid #22c55e !important;
+        }
+        td {
+            padding: 3px 0;
+            border: none;
+        }
+
+        /* Fit badge top right */
+        td.col-fit-cell {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 0;
+        }
+        td.col-fit-cell .badge {
+            font-size: 0.88rem;
+            padding: 4px 10px;
+        }
+
+        /* Role Title */
+        td.col-role-cell {
+            padding-right: 65px;
+            margin-bottom: 6px;
+        }
+        .job-title {
+            font-size: 1.05rem;
+            line-height: 1.35;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        .job-summary {
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* Company & Commute */
+        td.col-co-cell {
+            margin-bottom: 4px;
+            font-size: 0.92rem;
+        }
+        td.col-commute-cell {
+            margin-bottom: 6px;
+        }
+        td.col-commute-cell .badge {
+            font-size: 0.78rem;
+            white-space: normal;
+            line-height: 1.3;
+        }
+
+        /* Category & Degree */
+        td.col-cat-cell {
+            margin-bottom: 4px;
+        }
+        td.col-degree-cell {
+            margin-bottom: 4px;
+            font-size: 0.82rem;
+        }
+
+        /* Found Date */
+        td.col-found-cell {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+        td.col-found-cell::before {
+            content: "Discovered: ";
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        /* Action buttons: horizontal row on mobile */
+        td.col-action-cell {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        td.col-action-cell .btn-action,
+        td.col-action-cell .btn-prompt,
+        td.col-action-cell .btn-hide {
+            flex: 1;
+            margin: 0;
+            padding: 9px 4px;
+            font-size: 0.82rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🏦 Zurich Finance, Asset Management & Wealth Management Job Radar</h1>
+            <small class="muted">Origin: Glattbrugg (Max ~60m) | Profile: Director / Portfolio Manager (Cambridge MPhil, CFA Charter, GRE 170 Quant, Python/R) | Updated: 2026-11-14 23:03</small>
+        </div>
+        <div id="roleCountDisplay"><strong>47</strong> Matching Roles</div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Filter by title, company, location, Quant, Multi-Asset, Equity, UHNW, Python..." oninput="filterTable()" style="flex:1;">
+        <select id="scoreFilter" onchange="filterTable()">
+            <option value="0" selected>All Verified Roles (6+ / 10)</option>
+            <option value="7">Top Fits Only (7+ / 10)</option>
+            <option value="8">Strong Matches (8+ / 10)</option>
+            <option value="9">Dream Roles (9-10 / 10)</option>
+        </select>
+        <select id="catFilter" onchange="filterTable()">
+            <option value="">All Categories</option>
+            <option value="Asset Management">Asset Management</option>
+            <option value="Wealth Management">Wealth Management</option>
+            <option value="Investment Research">Investment Research</option>
+            <option value="Risk & Quantitative">Risk & Quantitative</option>
+            <option value="Corporate Finance / PE">Corporate Finance / PE</option>
+            <option value="Fintech & Markets">Fintech & Markets</option>
+            <option value="Operations / Compliance">Operations / Compliance</option>
+        </select>
+        <select id="commuteFilter" onchange="filterTable()">
+            <option value="999">All Commutes (&le; 60m)</option>
+            <option value="25">&le; 25 mins (Zurich Paradeplatz / Enge / Hardbrücke / Oerlikon)</option>
+            <option value="45">&le; 45 mins (+ Zug / Baar / Pfäffikon SZ / Winterthur)</option>
+        </select>
+        <select id="mobileSort" class="mobile-only-control" onchange="onMobileSortChange()">
+            <option value="0-desc" selected>Sort: Fit (Highest)</option>
+            <option value="0-asc">Sort: Fit (Lowest)</option>
+            <option value="6-desc">Sort: Date (Newest)</option>
+            <option value="6-asc">Sort: Date (Oldest)</option>
+            <option value="3-asc">Sort: Commute (Shortest)</option>
+            <option value="1-asc">Sort: Title (A-Z)</option>
+            <option value="2-asc">Sort: Company (A-Z)</option>
+        </select>
+        <button id="toggleHiddenBtn" onclick="toggleShowHidden()">Show Hidden (0)</button>
+    </div>
+
+    <table id="jobsTable">
+        <thead>
+            <tr>
+                <th class="sortable col-fit desc" onclick="sortTable(0)">Fit <span class="sort-icon">▼</span></th>
+                <th class="sortable col-role" onclick="sortTable(1)">Role & Match Summary <span class="sort-icon">↕</span></th>
+                <th class="sortable col-co" onclick="sortTable(2)">Company <span class="sort-icon">↕</span></th>
+                <th class="sortable col-commute" onclick="sortTable(3)">Commute <span class="sort-icon">↕</span></th>
+                <th class="sortable col-cat" onclick="sortTable(4)">Category & Track <span class="sort-icon">↕</span></th>
+                <th class="sortable col-degree" onclick="sortTable(5)">Degree & Language <span class="sort-icon">↕</span></th>
+                <th class="sortable col-found" onclick="sortTable(6)">Found <span class="sort-icon">↕</span></th>
+                <th class="sortable col-action" onclick="sortTable(7)">Status <span class="sort-icon">↕</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr data-id="f90908413da2" data-category="Investment Research" data-track="Track 12: Institutional Investment Consulting & Outsourced CIO (OCIO)" data-score="9" data-commute="15" data-title="Investment Consultant Asset Manager Selection" data-company="PPCmetrics AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">9/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/15484128-23ae-4ff4-ad10-524abc7cb1a3/" target="_blank" rel="noopener" class="job-title">Investment Consultant Asset Manager Selection</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Direct experience in fund selection, quantitative due diligence, and institutional portfolio management at UBS GWM</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires transition from B1/B2 German to C1/C2 professional fluency for client-facing consulting.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>PPCmetrics AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Investment Research</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 12: Institutional Investment Consulting & Outsourced CIO (OCIO)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('f90908413da2')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Investment Consultant Asset Manager Selection', 'PPCmetrics AG', '🎯 Track: Track 12: Institutional Investment Consulting & Outsourced CIO (OCIO) | ✅ Fit: Direct experience in fund selection, quantitative due diligence, and institutional portfolio management at UBS GWM | ⚠️ Gaps: Requires transition from B1/B2 German to C1/C2 professional fluency for client-facing consulting.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('f90908413da2')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="9e8df11b85fd" data-category="Asset Management" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="9" data-commute="35" data-title="Portfolio Manager" data-company="MCP (Switzerland) Sàrl" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">9/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/d5a38ab6-b941-4108-8873-81db111f41f4/" target="_blank" rel="noopener" class="job-title">Portfolio Manager</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Direct alignment with Millennium's multi-strategy hedge fund model; candidate possesses the exact technical stack (Python/cvxpy/ECOS for convex optimization, factor modeling, and systematic backtesting) and institutional PM experience ($4bn+ AuM, $160bn team scale) required for a high-performance hedge fund environment.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: The candidate's transition from a large-scale institutional wealth/asset management environment to a high-frequency/multi-strategy hedge fund pod may require rapid adaptation to specific alpha-capture horizons, though his quantitative research and portfolio engineering background are highly transferable.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>MCP (Switzerland) Sàrl</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Baar (~35m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('9e8df11b85fd')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Portfolio Manager', 'MCP (Switzerland) Sàrl', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Direct alignment with Millennium\'s multi-strategy hedge fund model; candidate possesses the exact technical stack (Python/cvxpy/ECOS for convex optimization, factor modeling, and systematic backtesting) and institutional PM experience ($4bn+ AuM, $160bn team scale) required for a high-performance hedge fund environment. | ⚠️ Gaps: Minimal gaps: The candidate\'s transition from a large-scale institutional wealth/asset management environment to a high-frequency/multi-strategy hedge fund pod may require rapid adaptation to specific alpha-capture horizons, though his quantitative research and portfolio engineering background are highly transferable.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('9e8df11b85fd')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="6048f6bbcffd" data-category="Asset Management" data-track="Track 3: Head of Manager Selection / Multi-Manager & Fund Solutions Lead" data-score="9" data-commute="35" data-title="Investment Professional - Hedge Funds" data-company="LGT Capital Partners AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">9/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/e3bc0e26-ef14-4744-b2d7-f88c2f13020f/" target="_blank" rel="noopener" class="job-title">Investment Professional - Hedge Funds</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director/PM managing $4bn+ AuM, CFA Charterholder, expert in manager due diligence and quantitative portfolio optimization</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: core duties align directly with candidate's asset management and quantitative toolkit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>LGT Capital Partners AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Pfaeffikon (Schuetzenstrasse) (~35m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 3: Head of Manager Selection / Multi-Manager & Fund Solutions Lead</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('6048f6bbcffd')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Investment Professional - Hedge Funds', 'LGT Capital Partners AG', '🎯 Track: Track 3: Head of Manager Selection / Multi-Manager & Fund Solutions Lead | ✅ Fit: UBS GWM Director/PM managing $4bn+ AuM, CFA Charterholder, expert in manager due diligence and quantitative portfolio optimization | ⚠️ Gaps: Minimal gaps: core duties align directly with candidate\'s asset management and quantitative toolkit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('6048f6bbcffd')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="dc3984930470" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="9" data-commute="38" data-title="Specialist Portfolio Manager" data-company="WorldQuant" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">9/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.worldquant.com/career-listing/?id=4373285006" target="_blank" rel="noopener" class="job-title">Specialist Portfolio Manager</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Cambridge MPhil, CFA, Python/cvxpy optimization, and systematic PM experience</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: core duties align directly with candidate's asset management and quantitative toolkit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>WorldQuant</strong><br><small class="muted">Curated Watchlist</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('dc3984930470')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Specialist Portfolio Manager', 'WorldQuant', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Cambridge MPhil, CFA, Python/cvxpy optimization, and systematic PM experience | ⚠️ Gaps: Minimal gaps: core duties align directly with candidate\'s asset management and quantitative toolkit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('dc3984930470')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="5de27c3dabe7" data-category="Asset Management" data-track="Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation" data-score="8" data-commute="15" data-title="Product Manager Institutional Mandates (80-100%)" data-company="Vontobel" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://vontobel.wd3.myworkdayjobs.com/en-US/Vontobel_External_Career/job/Zrich--Genferstrasse-27/Product-Manager-Institutional-Mandates--80-100--_9541-2" target="_blank" rel="noopener" class="job-title">Product Manager Institutional Mandates (80-100%)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director/PM experience, $4bn+ fund management, and Python/cvxpy portfolio engineering</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: core duties align directly with candidate's asset management and quantitative toolkit</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Vontobel</strong><br><small class="muted">Workday Direct API</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich / Genferstrasse 27 (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('5de27c3dabe7')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Product Manager Institutional Mandates (80-100%)', 'Vontobel', '🎯 Track: Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation | ✅ Fit: UBS GWM Director/PM experience, $4bn+ fund management, and Python/cvxpy portfolio engineering | ⚠️ Gaps: Minimal gaps: core duties align directly with candidate\'s asset management and quantitative toolkit')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('5de27c3dabe7')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="f94735f2e96c" data-category="Asset Management" data-track="Track 9: Insurance & Reinsurance Institutional Investments / ALM" data-score="8" data-commute="15" data-title="Head of Capital-Light Savings & Retirement 80-100%" data-company="Zurich Insurance Group (Investment Management)" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.careers.zurich.com/job/Z%C3%BCrich-Head-of-Capital-Light-Savings-&-Retirement-80-100/1375715957/" target="_blank" rel="noopener" class="job-title">Head of Capital-Light Savings & Retirement 80-100%</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director, CFA Charterholder, $4B+ PM track record, and advanced Python/cvxpy quantitative optimization</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: core duties align directly with candidate's asset management and quantitative toolkit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Zurich Insurance Group (Investment Management)</strong><br><small class="muted">Curated Watchlist</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zurich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 9: Insurance & Reinsurance Institutional Investments / ALM</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('f94735f2e96c')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Head of Capital-Light Savings & Retirement 80-100%', 'Zurich Insurance Group (Investment Management)', '🎯 Track: Track 9: Insurance & Reinsurance Institutional Investments / ALM | ✅ Fit: UBS GWM Director, CFA Charterholder, $4B+ PM track record, and advanced Python/cvxpy quantitative optimization | ⚠️ Gaps: Minimal gaps: core duties align directly with candidate\'s asset management and quantitative toolkit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('f94735f2e96c')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="dbde6ae8862b" data-category="Investment Research" data-track="Track 12: Institutional Investment Consulting & Outsourced CIO (OCIO)" data-score="8" data-commute="15" data-title="Senior Investment-Consultant / Investment-Controller 100% (w/m/d)" data-company="Complementa AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/9c756109-e175-4e5d-be64-f90fc2801586/" target="_blank" rel="noopener" class="job-title">Senior Investment-Consultant / Investment-Controller 100% (w/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> CFA Charter, Cambridge MPhil, and institutional-grade portfolio/manager selection expertise</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C1/C2 German fluency for client-facing consulting duties</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Complementa AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Investment Research</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 12: Institutional Investment Consulting & Outsourced CIO (OCIO)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('dbde6ae8862b')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Investment-Consultant / Investment-Controller 100% (w/m/d)', 'Complementa AG', '🎯 Track: Track 12: Institutional Investment Consulting & Outsourced CIO (OCIO) | ✅ Fit: CFA Charter, Cambridge MPhil, and institutional-grade portfolio/manager selection expertise | ⚠️ Gaps: Requires C1/C2 German fluency for client-facing consulting duties')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('dbde6ae8862b')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="b68a3adbd853" data-category="Wealth Management" data-track="Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor" data-score="8" data-commute="15" data-title="Lead Investment Communication (80-100%)" data-company="Globalance Bank AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/183195a3-45c3-40d2-ab02-ed8e47d5011b/" target="_blank" rel="noopener" class="job-title">Lead Investment Communication (80-100%)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director, CFA Charterholder, $4B+ PM track record, and quantitative portfolio engineering skills</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires transition from B1/B2 to C1/C2 German for client-facing advisory duties.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Globalance Bank AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('b68a3adbd853')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Lead Investment Communication (80-100%)', 'Globalance Bank AG', '🎯 Track: Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor | ✅ Fit: UBS GWM Director, CFA Charterholder, $4B+ PM track record, and quantitative portfolio engineering skills | ⚠️ Gaps: Requires transition from B1/B2 to C1/C2 German for client-facing advisory duties.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('b68a3adbd853')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="1b9bfc3ce952" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="8" data-commute="15" data-title="Quantitative Engineer – Risk Analytics" data-company="swissQuant Group AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/9efb25c3-d839-4d12-abec-4bff882b44da/" target="_blank" rel="noopener" class="job-title">Quantitative Engineer – Risk Analytics</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Python/cvxpy factor modeling, portfolio optimization, and risk engine development experience</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: core duties align directly with candidate's asset management and quantitative toolkit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>swissQuant Group AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('1b9bfc3ce952')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Engineer – Risk Analytics', 'swissQuant Group AG', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Python/cvxpy factor modeling, portfolio optimization, and risk engine development experience | ⚠️ Gaps: Minimal gaps: core duties align directly with candidate\'s asset management and quantitative toolkit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('1b9bfc3ce952')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="b5dbf81cd11f" data-category="Wealth Management" data-track="Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation" data-score="8" data-commute="15" data-title="Investment Advisor" data-company="Vontobel Beteiligungen AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/2740839b-2f57-4b20-b1b0-9377bbff94e2/" target="_blank" rel="noopener" class="job-title">Investment Advisor</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director experience in TAA, multi-manager construction, and quantitative portfolio engineering</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires transition from B1-B2 German to C1/C2 for client-facing advisory duties</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Vontobel Beteiligungen AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zurich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('b5dbf81cd11f')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Investment Advisor', 'Vontobel Beteiligungen AG', '🎯 Track: Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation | ✅ Fit: UBS GWM Director experience in TAA, multi-manager construction, and quantitative portfolio engineering | ⚠️ Gaps: Requires transition from B1-B2 German to C1/C2 for client-facing advisory duties')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('b5dbf81cd11f')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="b0105cb7b43c" data-category="Investment Research" data-track="Track 2: Direct Equity Selection (Fundamental & Quantamental Stock Picking)" data-score="8" data-commute="15" data-title="Aktienanalyst/-in (100%)" data-company="Albin Kistler AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/7ccffbe1-58a7-46c1-8dcf-2787d7c15c8d/" target="_blank" rel="noopener" class="job-title">Aktienanalyst/-in (100%)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> CFA Charterholder with direct experience in fundamental equity selection and quantitative portfolio construction</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires transition from B1/B2 German to C1/C2 fluency for boutique client-facing and analytical communication.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Albin Kistler AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Investment Research</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 2: Direct Equity Selection (Fundamental & Quantamental Stock Picking)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('b0105cb7b43c')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Aktienanalyst/-in (100%)', 'Albin Kistler AG', '🎯 Track: Track 2: Direct Equity Selection (Fundamental & Quantamental Stock Picking) | ✅ Fit: CFA Charterholder with direct experience in fundamental equity selection and quantitative portfolio construction | ⚠️ Gaps: Requires transition from B1/B2 German to C1/C2 fluency for boutique client-facing and analytical communication.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('b0105cb7b43c')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="00a8d77987f8" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="8" data-commute="35" data-title="Senior Quantitative Risk Manager" data-company="Swissblock (Quant Research)" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://jobs.lever.co/swissblock/cc0069ff-9dbc-40a5-86e6-9d029eca4008" target="_blank" rel="noopener" class="job-title">Senior Quantitative Risk Manager</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Expertise in convex optimization, factor modeling, and Python-based risk platform engineering</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Minimal gaps: core duties align directly with candidate's asset management and quantitative toolkit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Swissblock (Quant Research)</strong><br><small class="muted">Startup API (Swissblock (Quant Research))</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Baar ZG (~35m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('00a8d77987f8')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Quantitative Risk Manager', 'Swissblock (Quant Research)', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Expertise in convex optimization, factor modeling, and Python-based risk platform engineering | ⚠️ Gaps: Minimal gaps: core duties align directly with candidate\'s asset management and quantitative toolkit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('00a8d77987f8')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="e91fbdc8b84b" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="8" data-commute="38" data-title="Quantitative Developer" data-company="WorldQuant" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.worldquant.com/career-listing/?id=4648089006" target="_blank" rel="noopener" class="job-title">Quantitative Developer</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Python/cvxpy factor modeling, systematic equity construction, and AI/LLM research integration</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Transition from discretionary PM/Director role to a dedicated quant-engineering/developer focus</div></div>
+            </td>
+            <td class="col-co-cell"><strong>WorldQuant</strong><br><small class="muted">Curated Watchlist</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('e91fbdc8b84b')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Developer', 'WorldQuant', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Python/cvxpy factor modeling, systematic equity construction, and AI/LLM research integration | ⚠️ Gaps: Transition from discretionary PM/Director role to a dedicated quant-engineering/developer focus')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('e91fbdc8b84b')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="347591a3a95c" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="8" data-commute="38" data-title="Quantitative Python Developer" data-company="WorldQuant" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.worldquant.com/career-listing/?id=4379256006" target="_blank" rel="noopener" class="job-title">Quantitative Python Developer</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Python/cvxpy factor modeling, systematic portfolio construction, and Cambridge/CFA quant credentials</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Transition from a senior PM/Director role to a specialized quantitative developer/research-embedded tech position.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>WorldQuant</strong><br><small class="muted">Curated Watchlist</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('347591a3a95c')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Python Developer', 'WorldQuant', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Python/cvxpy factor modeling, systematic portfolio construction, and Cambridge/CFA quant credentials | ⚠️ Gaps: Transition from a senior PM/Director role to a specialized quantitative developer/research-embedded tech position.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('347591a3a95c')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="2cd2645f70c2" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="8" data-commute="38" data-title="Quantitative Researcher - IPM (India)" data-company="WorldQuant" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.worldquant.com/career-listing/?id=4715001006" target="_blank" rel="noopener" class="job-title">Quantitative Researcher - IPM (India)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Cambridge MPhil, CFA, Python/cvxpy factor modeling, and systematic portfolio construction experience</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Potential seniority mismatch as candidate is a Director-level PM applying for a researcher role.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>WorldQuant</strong><br><small class="muted">Curated Watchlist</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('2cd2645f70c2')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Researcher - IPM (India)', 'WorldQuant', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Cambridge MPhil, CFA, Python/cvxpy factor modeling, and systematic portfolio construction experience | ⚠️ Gaps: Potential seniority mismatch as candidate is a Director-level PM applying for a researcher role.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('2cd2645f70c2')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="68427f6846f2" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="8" data-commute="38" data-title="Quantitative Researcher, Quant Macro" data-company="WorldQuant" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.worldquant.com/career-listing/?id=4372598006" target="_blank" rel="noopener" class="job-title">Quantitative Researcher, Quant Macro</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Cambridge MPhil, CFA, perfect GRE Quant, and proprietary Python/cvxpy factor modeling experience</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Transitioning from discretionary PM/client-facing role to pure systematic signal research</div></div>
+            </td>
+            <td class="col-co-cell"><strong>WorldQuant</strong><br><small class="muted">Curated Watchlist</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('68427f6846f2')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Researcher, Quant Macro', 'WorldQuant', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Cambridge MPhil, CFA, perfect GRE Quant, and proprietary Python/cvxpy factor modeling experience | ⚠️ Gaps: Transitioning from discretionary PM/client-facing role to pure systematic signal research')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('68427f6846f2')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="2d2d3cde2209" data-category="Investment Research" data-track="Track 2: Direct Equity Selection (Fundamental & Quantamental Stock Picking)" data-score="8" data-commute="38" data-title="Equity Analyst/in Schweizer Aktien (100%)" data-company="schilling partners ag" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-high">8/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/60c67166-41c0-4d7a-88e2-c00a9335fa99/" target="_blank" rel="noopener" class="job-title">Equity Analyst/in Schweizer Aktien (100%)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> CFA Charterholder, UBS GWM Equity PM experience, and advanced Python/cvxpy factor modeling skills</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires native-level German (C1/C2) for local Swiss equity market coverage</div></div>
+            </td>
+            <td class="col-co-cell"><strong>schilling partners ag</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Investment Research</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 2: Direct Equity Selection (Fundamental & Quantamental Stock Picking)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('2d2d3cde2209')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Equity Analyst/in Schweizer Aktien (100%)', 'schilling partners ag', '🎯 Track: Track 2: Direct Equity Selection (Fundamental & Quantamental Stock Picking) | ✅ Fit: CFA Charterholder, UBS GWM Equity PM experience, and advanced Python/cvxpy factor modeling skills | ⚠️ Gaps: Requires native-level German (C1/C2) for local Swiss equity market coverage')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('2d2d3cde2209')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="459734430c07" data-category="Asset Management" data-track="Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation" data-score="7" data-commute="15" data-title="Fixed Income High Yield Portfolio Manager & Credit Analyst, 100% (f/m/d)" data-company="Julius Baer" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://juliusbaer.wd3.myworkdayjobs.com/en-US/External/job/Zurich/Fixed-Income-High-Yield-Portfolio-Manager---Credit-Analyst--100---f-m-d-_r-20284-1" target="_blank" rel="noopener" class="job-title">Fixed Income High Yield Portfolio Manager & Credit Analyst, 100% (f/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> CFA charterholder with comprehensive valuation and fixed income analysis mastery, alongside robust portfolio management experience at UBS GWM managing multi-billion portfolios and utilizing advanced Python/quantitative analytics frameworks.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Candidate's primary core asset class expertise is in equity fund selection, multi-manager equity strategies, and tactical asset allocation rather than dedicated, standalone single-name High Yield credit analysis.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Julius Baer</strong><br><small class="muted">Workday Direct API</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zurich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('459734430c07')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Fixed Income High Yield Portfolio Manager & Credit Analyst, 100% (f/m/d)', 'Julius Baer', '🎯 Track: Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation | ✅ Fit: CFA charterholder with comprehensive valuation and fixed income analysis mastery, alongside robust portfolio management experience at UBS GWM managing multi-billion portfolios and utilizing advanced Python/quantitative analytics frameworks. | ⚠️ Gaps: Candidate\'s primary core asset class expertise is in equity fund selection, multi-manager equity strategies, and tactical asset allocation rather than dedicated, standalone single-name High Yield credit analysis.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('459734430c07')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="dacd9ed483a0" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="7" data-commute="15" data-title="Quantitative Analyst, Risk and Product Control Interface 100% (f/m/d)" data-company="Julius Baer" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://juliusbaer.wd3.myworkdayjobs.com/en-US/External/job/Zurich/Quantitative-Analyst--Risk-and-Product-Control-Interface-100---f-m-d-_r-20175-2" target="_blank" rel="noopener" class="job-title">Quantitative Analyst, Risk and Product Control Interface 100% (f/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Expertise in convex optimization, factor modeling, and Python-based portfolio analytics</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Role is more focused on risk/product control interface than pure discretionary PM strategy</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Julius Baer</strong><br><small class="muted">Workday Direct API</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zurich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('dacd9ed483a0')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Analyst, Risk and Product Control Interface 100% (f/m/d)', 'Julius Baer', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Expertise in convex optimization, factor modeling, and Python-based portfolio analytics | ⚠️ Gaps: Role is more focused on risk/product control interface than pure discretionary PM strategy')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('dacd9ed483a0')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="acb7eaf685eb" data-category="Wealth Management" data-track="Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor" data-score="7" data-commute="15" data-title="Investment Advisor" data-company="Vontobel" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://vontobel.wd3.myworkdayjobs.com/en-US/Vontobel_External_Career/job/Zrich--Gotthardstrasse-43/Investment-Advisor_9608-1" target="_blank" rel="noopener" class="job-title">Investment Advisor</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> 8 years UBS GWM portfolio management background, CFA Charterholder, Cambridge MPhil Finance, extensive experience delivering CIO asset allocation briefings and advising wealth management specialists.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Candidate possesses B1/B2 German while Vontobel Swiss Private Clients Distribution often requires C1/C2 German; concise API listing lacks details on international vs domestic desk focus.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Vontobel</strong><br><small class="muted">Workday Direct API</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich / Gotthardstrasse 43 (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('acb7eaf685eb')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Investment Advisor', 'Vontobel', '🎯 Track: Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor | ✅ Fit: 8 years UBS GWM portfolio management background, CFA Charterholder, Cambridge MPhil Finance, extensive experience delivering CIO asset allocation briefings and advising wealth management specialists. | ⚠️ Gaps: Candidate possesses B1/B2 German while Vontobel Swiss Private Clients Distribution often requires C1/C2 German; concise API listing lacks details on international vs domestic desk focus.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('acb7eaf685eb')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="bab5377ec9ed" data-category="Wealth Management" data-track="Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor" data-score="7" data-commute="15" data-title="Strategic Business Development Key Clients & Family Offices - DACH" data-company="Vontobel" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://vontobel.wd3.myworkdayjobs.com/en-US/Vontobel_External_Career/job/Zrich--Gotthardstrasse-43/Strategic-Business-Development-Key-Clients---Family-Offices_9252-1" target="_blank" rel="noopener" class="job-title">Strategic Business Development Key Clients & Family Offices - DACH</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director experience, $4bn+ PM track record, CFA Charterholder</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C1/C2 German for DACH client-facing business development.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Vontobel</strong><br><small class="muted">Workday Direct API</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich / Gotthardstrasse 43 (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('bab5377ec9ed')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Strategic Business Development Key Clients & Family Offices - DACH', 'Vontobel', '🎯 Track: Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor | ✅ Fit: UBS GWM Director experience, $4bn+ PM track record, CFA Charterholder | ⚠️ Gaps: Requires C1/C2 German for DACH client-facing business development.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('bab5377ec9ed')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="b1a41fc6e165" data-category="Asset Management" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="7" data-commute="15" data-title="Fixed Income High Yield Portfolio Manager & Credit Analyst, 100% (f/m/d)" data-company="Bank Julius Bär & Co. AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/a6bc1226-280d-4d9c-9491-e46c714ce45b/" target="_blank" rel="noopener" class="job-title">Fixed Income High Yield Portfolio Manager & Credit Analyst, 100% (f/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> CFA Charterholder, Python/cvxpy optimization, and $4B+ PM track record</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Transition from equity/multi-asset to dedicated high-yield credit analysis.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Bank Julius Bär & Co. AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('b1a41fc6e165')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Fixed Income High Yield Portfolio Manager & Credit Analyst, 100% (f/m/d)', 'Bank Julius Bär & Co. AG', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: CFA Charterholder, Python/cvxpy optimization, and $4B+ PM track record | ⚠️ Gaps: Transition from equity/multi-asset to dedicated high-yield credit analysis.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('b1a41fc6e165')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="3fcb468d0273" data-category="Fintech & Markets" data-track="Track 11: WealthTech, AssetTech & AI/Quant Platform Leadership" data-score="7" data-commute="15" data-title="Business Area Manager – Wealth Management Solutions" data-company="swissQuant Group AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/0ccd4687-3ce0-4a0b-a317-9114be1eb896/" target="_blank" rel="noopener" class="job-title">Business Area Manager – Wealth Management Solutions</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Proven track record in building proprietary portfolio optimization engines and quantitative analytics platforms</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C2 German fluency and 10+ years of experience; candidate is at B1-B2 German and 8 years tenure.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>swissQuant Group AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Fintech & Markets</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 11: WealthTech, AssetTech & AI/Quant Platform Leadership</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('3fcb468d0273')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Business Area Manager – Wealth Management Solutions', 'swissQuant Group AG', '🎯 Track: Track 11: WealthTech, AssetTech & AI/Quant Platform Leadership | ✅ Fit: Proven track record in building proprietary portfolio optimization engines and quantitative analytics platforms | ⚠️ Gaps: Requires C2 German fluency and 10+ years of experience; candidate is at B1-B2 German and 8 years tenure.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('3fcb468d0273')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="3b455832d936" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="7" data-commute="15" data-title="GPS Associate: Quantitative Analyst, 100% (f/m/d)" data-company="Bank Julius Bär & Co. AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/1b585007-48e0-4929-9401-ddf7812fd270/" target="_blank" rel="noopener" class="job-title">GPS Associate: Quantitative Analyst, 100% (f/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Python/SQL/cvxpy quantitative toolkit, UBS systematic optimizer experience, CFA Charterholder</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Potential seniority mismatch (Associate vs. current Director level)</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Bank Julius Bär & Co. AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('3b455832d936')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'GPS Associate: Quantitative Analyst, 100% (f/m/d)', 'Bank Julius Bär & Co. AG', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Python/SQL/cvxpy quantitative toolkit, UBS systematic optimizer experience, CFA Charterholder | ⚠️ Gaps: Potential seniority mismatch (Associate vs. current Director level)')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('3b455832d936')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="b3906ad6e400" data-category="Asset Management" data-track="Track 2: Direct Equity Selection (Fundamental & Quantamental)" data-score="7" data-commute="15" data-title="INVESTMENT ANALYST, CREDIT / ALTERNATIVES, 100%" data-company="Alpinum Investment Management  AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/3d965fb1-4964-44d4-9b15-5e6b66f56269/" target="_blank" rel="noopener" class="job-title">INVESTMENT ANALYST, CREDIT / ALTERNATIVES, 100%</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Portfolio Manager experience, CFA Charterholder, and advanced Python/cvxpy quantitative toolkit</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Transition from large-scale $160bn AuM environment to $2bn boutique; potential need to pivot from equity-heavy focus to credit/alternatives.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Alpinum Investment Management  AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 2: Direct Equity Selection (Fundamental & Quantamental)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('b3906ad6e400')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'INVESTMENT ANALYST, CREDIT / ALTERNATIVES, 100%', 'Alpinum Investment Management  AG', '🎯 Track: Track 2: Direct Equity Selection (Fundamental & Quantamental) | ✅ Fit: UBS GWM Portfolio Manager experience, CFA Charterholder, and advanced Python/cvxpy quantitative toolkit | ⚠️ Gaps: Transition from large-scale $160bn AuM environment to $2bn boutique; potential need to pivot from equity-heavy focus to credit/alternatives.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('b3906ad6e400')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="37b6c60bad36" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office CIO or Investment Director" data-score="7" data-commute="15" data-title="Sachbearbeiter/in Portfolio Management Services (80-100%)" data-company="Marcuard Family Office AG" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/07686708-5c2d-4290-b6f8-b87ec87626a7/" target="_blank" rel="noopener" class="job-title">Sachbearbeiter/in Portfolio Management Services (80-100%)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Marcuard Family Office AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('37b6c60bad36')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Sachbearbeiter/in Portfolio Management Services (80-100%)', 'Marcuard Family Office AG', '🎯 Track: Track 7: Single & Multi-Family Office CIO or Investment Director | ✅ Fit: Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('37b6c60bad36')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="24ec427b90c6" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office CIO or Investment Director" data-score="7" data-commute="15" data-title="Berater Anlageimmobilien (m/w) 100%" data-company="Swiss Sports Family Office AG" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/6936460a-0c7a-4220-bd53-1499129191e0/" target="_blank" rel="noopener" class="job-title">Berater Anlageimmobilien (m/w) 100%</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Swiss Sports Family Office AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('24ec427b90c6')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Berater Anlageimmobilien (m/w) 100%', 'Swiss Sports Family Office AG', '🎯 Track: Track 7: Single & Multi-Family Office CIO or Investment Director | ✅ Fit: Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('24ec427b90c6')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="30a0e6ed5683" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office CIO or Investment Director" data-score="7" data-commute="15" data-title="Finance Director | International Private Investment Office / Family Office - [A016193]" data-company="Humanis AG" data-date="2026-11-14" data-degree="Senior Director / PM Lead">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/4a0fa75b-86d3-492c-91fd-482d5b1b1c4c/" target="_blank" rel="noopener" class="job-title">Finance Director | International Private Investment Office / Family Office - [A016193]</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Humanis AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Vaduz/Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">Senior Director / PM Lead</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('30a0e6ed5683')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Finance Director | International Private Investment Office / Family Office - [A016193]', 'Humanis AG', '🎯 Track: Track 7: Single & Multi-Family Office CIO or Investment Director | ✅ Fit: Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('30a0e6ed5683')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="14bed2034308" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="7" data-commute="15" data-title="Investment Data Solution Engineer (m/w/d)" data-company="Zürich Versicherungs-Gesellschaft AG / Zurich Insurance Company Ltd / Zurich Compagnie d\'Assurances SA" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/adaa617b-2032-41c0-bb66-3b2fe02aca6d/" target="_blank" rel="noopener" class="job-title">Investment Data Solution Engineer (m/w/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Proven expertise in Python/cvxpy optimization and institutional data pipeline engineering</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Shift from direct PM decision-making to investment data infrastructure development</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Zürich Versicherungs-Gesellschaft AG / Zurich Insurance Company Ltd / Zurich Compagnie d'Assurances SA</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">CH - Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('14bed2034308')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Investment Data Solution Engineer (m/w/d)', 'Zürich Versicherungs-Gesellschaft AG / Zurich Insurance Company Ltd / Zurich Compagnie d\'Assurances SA', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Proven expertise in Python/cvxpy optimization and institutional data pipeline engineering | ⚠️ Gaps: Shift from direct PM decision-making to investment data infrastructure development')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('14bed2034308')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="311e48f18ba7" data-category="Fintech & Markets" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="7" data-commute="15" data-title="Trader" data-company="MCP (Switzerland) Sàrl" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/88b517a8-fe60-4323-93b1-1529c62c2907/" target="_blank" rel="noopener" class="job-title">Trader</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Expertise in systematic equity index strategies, convex optimization, and Python-based quantitative research</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Potential strategy mismatch between discretionary fund management and high-frequency derivatives execution</div></div>
+            </td>
+            <td class="col-co-cell"><strong>MCP (Switzerland) Sàrl</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zurich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Fintech & Markets</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('311e48f18ba7')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Trader', 'MCP (Switzerland) Sàrl', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Expertise in systematic equity index strategies, convex optimization, and Python-based quantitative research | ⚠️ Gaps: Potential strategy mismatch between discretionary fund management and high-frequency derivatives execution')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('311e48f18ba7')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="284a45e918da" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="7" data-commute="35" data-title="Senior Quantitative Researcher" data-company="Swissblock (Quant Research)" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://jobs.lever.co/swissblock/9ada630b-ae52-4a78-b3d9-12fb545c6a43" target="_blank" rel="noopener" class="job-title">Senior Quantitative Researcher</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Risk & Quantitative background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Swissblock (Quant Research)</strong><br><small class="muted">Startup API (Swissblock (Quant Research))</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Baar ZG (~35m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('284a45e918da')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Quantitative Researcher', 'Swissblock (Quant Research)', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Matches Risk & Quantitative background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('284a45e918da')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="39d0a254c36c" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office CIO or Investment Director" data-score="7" data-commute="38" data-title="Family Office Adminstrator" data-company="Linden Management AG" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/5b49150b-ec93-417f-9a97-98e3f6aa81ce/" target="_blank" rel="noopener" class="job-title">Family Office Adminstrator</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Linden Management AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('39d0a254c36c')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Family Office Adminstrator', 'Linden Management AG', '🎯 Track: Track 7: Single & Multi-Family Office CIO or Investment Director | ✅ Fit: Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('39d0a254c36c')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="1190d8cb40ed" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office CIO or Investment Director" data-score="7" data-commute="38" data-title="Senior Finance Manager (m/w)" data-company="Avalon Invest AG" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/262fdf8f-9a9c-4698-9bc7-2d9ccb6223b6/" target="_blank" rel="noopener" class="job-title">Senior Finance Manager (m/w)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Avalon Invest AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('1190d8cb40ed')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Finance Manager (m/w)', 'Avalon Invest AG', '🎯 Track: Track 7: Single & Multi-Family Office CIO or Investment Director | ✅ Fit: Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('1190d8cb40ed')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="2113529af37b" data-category="Wealth Management" data-track="Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor" data-score="7" data-commute="38" data-title="Senior Investment Advisor" data-company="VZ VermögensZentrum" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/9f30c307-101b-487d-acb1-35c594eb0d3d/" target="_blank" rel="noopener" class="job-title">Senior Investment Advisor</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director, CFA Charterholder, $4bn+ PM track record, TAA/discretionary mandate expertise</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires native German (C1/C2) for retail-facing advisory, candidate is B1/B2.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>VZ VermögensZentrum</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('2113529af37b')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Investment Advisor', 'VZ VermögensZentrum', '🎯 Track: Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor | ✅ Fit: UBS GWM Director, CFA Charterholder, $4bn+ PM track record, TAA/discretionary mandate expertise | ⚠️ Gaps: Requires native German (C1/C2) for retail-facing advisory, candidate is B1/B2.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('2113529af37b')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="3fd97f6b8dd9" data-category="Asset Management" data-track="Track 2: Direct Equity Selection (Fundamental & Quantamental)" data-score="7" data-commute="48" data-title="Portfolio Manager:in Aktien Schweiz mit Fokus auf Mid/Large Caps (w/m/d)" data-company="Luzerner Kantonalbank" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/e196e8c5-0a67-4308-90e6-899dcd94f95d/" target="_blank" rel="noopener" class="job-title">Portfolio Manager:in Aktien Schweiz mit Fokus auf Mid/Large Caps (w/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Direct experience as a Portfolio Manager for $4bn+ equity funds and quantitative factor modeling</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C1/C2 German fluency for a Cantonal Bank environment and is at the limit of the commute range.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Luzerner Kantonalbank</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Luzern (~48m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 2: Direct Equity Selection (Fundamental & Quantamental)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('3fd97f6b8dd9')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Portfolio Manager:in Aktien Schweiz mit Fokus auf Mid/Large Caps (w/m/d)', 'Luzerner Kantonalbank', '🎯 Track: Track 2: Direct Equity Selection (Fundamental & Quantamental) | ✅ Fit: Direct experience as a Portfolio Manager for $4bn+ equity funds and quantitative factor modeling | ⚠️ Gaps: Requires C1/C2 German fluency for a Cantonal Bank environment and is at the limit of the commute range.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('3fd97f6b8dd9')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="0b7db2ebda86" data-category="Asset Management" data-track="Track 2: Direct Equity Selection (Fundamental & Quantamental)" data-score="7" data-commute="58" data-title="Portfolio Manager Equities" data-company="TARENO AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/4ac2baea-0352-4bee-8c67-82bb3bb7412b/" target="_blank" rel="noopener" class="job-title">Portfolio Manager Equities</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Proven PM track record for $4bn+ equity funds, CFA Charter, and advanced Python/cvxpy quantitative toolkit</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C1/C2 German fluency for a boutique Swiss firm and potential commute friction to Basel.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>TARENO AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Basel (~58m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 2: Direct Equity Selection (Fundamental & Quantamental)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('0b7db2ebda86')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Portfolio Manager Equities', 'TARENO AG', '🎯 Track: Track 2: Direct Equity Selection (Fundamental & Quantamental) | ✅ Fit: Proven PM track record for $4bn+ equity funds, CFA Charter, and advanced Python/cvxpy quantitative toolkit | ⚠️ Gaps: Requires C1/C2 German fluency for a boutique Swiss firm and potential commute friction to Basel.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('0b7db2ebda86')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="5f52a61b8541" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office (SFO / MFO) CIO or Investment Director" data-score="7" data-commute="58" data-title="Senior Asset Manager (m/w/d)" data-company="BGP AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/2b61f4fd-d2a1-4f00-b206-8822d04321c4/" target="_blank" rel="noopener" class="job-title">Senior Asset Manager (m/w/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UHNW portfolio construction, $4bn+ PM track record, and advanced quantitative optimization skills</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Commute to Schaan, C1/C2 German requirement, and transition from institutional CIO desk to holistic MFO advisory.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>BGP AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Schaan (~58m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office (SFO / MFO) CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('5f52a61b8541')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Asset Manager (m/w/d)', 'BGP AG', '🎯 Track: Track 7: Single & Multi-Family Office (SFO / MFO) CIO or Investment Director | ✅ Fit: UHNW portfolio construction, $4bn+ PM track record, and advanced quantitative optimization skills | ⚠️ Gaps: Commute to Schaan, C1/C2 German requirement, and transition from institutional CIO desk to holistic MFO advisory.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('5f52a61b8541')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="2676711e6115" data-category="Wealth Management" data-track="Track 7: Single & Multi-Family Office CIO or Investment Director" data-score="7" data-commute="58" data-title="Senior Consultant Treuhand & Family Office" data-company="adills AG" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-med">7/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/6d331bd0-138c-4a1c-89b5-d091a0dbebf3/" target="_blank" rel="noopener" class="job-title">Senior Consultant Treuhand & Family Office</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>adills AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Basel (~58m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 7: Single & Multi-Family Office CIO or Investment Director</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('2676711e6115')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Senior Consultant Treuhand & Family Office', 'adills AG', '🎯 Track: Track 7: Single & Multi-Family Office CIO or Investment Director | ✅ Fit: Matches Wealth Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('2676711e6115')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="1e92c352661b" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="6" data-commute="15" data-title="GPS Associate: Quantitative Analyst, 100% (f/m/d)" data-company="Julius Baer" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://juliusbaer.wd3.myworkdayjobs.com/en-US/External/job/Zurich/GPS-Associate--Quantitative-Analyst--100---f-m-d-_r-19945-2" target="_blank" rel="noopener" class="job-title">GPS Associate: Quantitative Analyst, 100% (f/m/d)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Direct overlap with Cambridge MPhil econometrics, perfect 170 GRE Quant, CFA charter, and experience building quantitative Python/R portfolio optimization tools at UBS GWM.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Seniority downgrade: role is at Associate level, whereas candidate currently holds Director rank with 8 years of asset management and quantitative portfolio management experience.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Julius Baer</strong><br><small class="muted">Workday Direct API</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zurich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('1e92c352661b')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'GPS Associate: Quantitative Analyst, 100% (f/m/d)', 'Julius Baer', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Direct overlap with Cambridge MPhil econometrics, perfect 170 GRE Quant, CFA charter, and experience building quantitative Python/R portfolio optimization tools at UBS GWM. | ⚠️ Gaps: Seniority downgrade: role is at Associate level, whereas candidate currently holds Director rank with 8 years of asset management and quantitative portfolio management experience.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('1e92c352661b')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="d8257097443a" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies" data-score="6" data-commute="15" data-title="Quant Engineer - Capital Market Technologies" data-company="swissQuant Group AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/9ab54502-daef-4f7b-b00c-106c37b5e3b6/" target="_blank" rel="noopener" class="job-title">Quant Engineer - Capital Market Technologies</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Advanced Python/Matlab/cvxpy quantitative modeling and systematic portfolio engineering</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Shift from discretionary PM/strategy toward IT/regulatory reporting and accounting-heavy tasks</div></div>
+            </td>
+            <td class="col-co-cell"><strong>swissQuant Group AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Zürich (~15m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('d8257097443a')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quant Engineer - Capital Market Technologies', 'swissQuant Group AG', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies | ✅ Fit: Advanced Python/Matlab/cvxpy quantitative modeling and systematic portfolio engineering | ⚠️ Gaps: Shift from discretionary PM/strategy toward IT/regulatory reporting and accounting-heavy tasks')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('d8257097443a')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="d79085702c0e" data-category="Risk & Quantitative" data-track="Track 9: Insurance & Reinsurance Institutional Investments / ALM" data-score="6" data-commute="24" data-title="Quantitative Risk Manager (m/f/d) Solvency Life 80-100%" data-company="Generali Personenversicherung AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/109b1504-096c-441f-beac-8568bf7d4cce/" target="_blank" rel="noopener" class="job-title">Quantitative Risk Manager (m/f/d) Solvency Life 80-100%</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Quantitative modeling, Python/cvxpy, and institutional portfolio engineering experience</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C1/C2 German fluency and transition from wealth/asset management to insurance-specific Solvency II risk frameworks</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Generali Personenversicherung AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-fast">Adliswil (~24m SBB/Car)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 9: Insurance & Reinsurance Institutional Investments / ALM</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('d79085702c0e')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Quantitative Risk Manager (m/f/d) Solvency Life 80-100%', 'Generali Personenversicherung AG', '🎯 Track: Track 9: Insurance & Reinsurance Institutional Investments / ALM | ✅ Fit: Quantitative modeling, Python/cvxpy, and institutional portfolio engineering experience | ⚠️ Gaps: Requires C1/C2 German fluency and transition from wealth/asset management to insurance-specific Solvency II risk frameworks')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('d79085702c0e')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="3575c598f38c" data-category="Corporate Finance / PE" data-track="Track 10: Private Markets Quantitative Portfolio Solutions" data-score="6" data-commute="35" data-title="Private Market - Infrastructure Secondaries Professional" data-company="LGT Capital Partners AG" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/38935ed6-cf87-4440-af93-68451265dc86/" target="_blank" rel="noopener" class="job-title">Private Market - Infrastructure Secondaries Professional</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Corporate Finance / PE background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>LGT Capital Partners AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Pfaeffikon (~35m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Corporate Finance / PE</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 10: Private Markets Quantitative Portfolio Solutions</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('3575c598f38c')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Private Market - Infrastructure Secondaries Professional', 'LGT Capital Partners AG', '🎯 Track: Track 10: Private Markets Quantitative Portfolio Solutions | ✅ Fit: Matches Corporate Finance / PE background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('3575c598f38c')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="ec6f0b94b6f0" data-category="Wealth Management" data-track="Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor" data-score="6" data-commute="38" data-title="Investment Advisor" data-company="VZ VermögensZentrum" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/8237db16-730e-4ccf-8dac-db76e19793c2/" target="_blank" rel="noopener" class="job-title">Investment Advisor</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Direct experience in discretionary portfolio management and TAA at UBS GWM</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires native German (C1/C2) for retail advisory and represents a shift toward a more retail-oriented client base.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>VZ VermögensZentrum</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-mid">Zug (~38m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('ec6f0b94b6f0')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Investment Advisor', 'VZ VermögensZentrum', '🎯 Track: Track 5: UHNW Investment Specialist / Bespoke Portfolio Counselor | ✅ Fit: Direct experience in discretionary portfolio management and TAA at UBS GWM | ⚠️ Gaps: Requires native German (C1/C2) for retail advisory and represents a shift toward a more retail-oriented client base.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('ec6f0b94b6f0')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="226b8ef0f642" data-category="Asset Management" data-track="Track 8: Swiss Pension Funds & Public Institutional Allocators" data-score="6" data-commute="49" data-title="VerwalterIn Pensionskasse" data-company="ALSA PK, unabhängige Sammelstiftung" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/68829a0b-a423-4077-b9a3-641c02b1768c/" target="_blank" rel="noopener" class="job-title">VerwalterIn Pensionskasse</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Asset Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>ALSA PK, unabhängige Sammelstiftung</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Rapperswil (~49m SBB Train)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 8: Swiss Pension Funds & Public Institutional Allocators</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('226b8ef0f642')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'VerwalterIn Pensionskasse', 'ALSA PK, unabhängige Sammelstiftung', '🎯 Track: Track 8: Swiss Pension Funds & Public Institutional Allocators | ✅ Fit: Matches Asset Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('226b8ef0f642')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="08d47bb40c01" data-category="Risk & Quantitative" data-track="Track 1: Quantitative Portfolio Management & Systematic Strategies (Tangential/Supportive)" data-score="6" data-commute="58" data-title="Risk & Performance Specialist" data-company="Bank J. Safra Sarasin AG" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/91356c38-7fb0-432e-8f1a-11379a4b929f/" target="_blank" rel="noopener" class="job-title">Risk & Performance Specialist</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Expertise in hybrid risk modeling, factor covariance decomposition, and Python/cvxpy convex optimization</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Basel location exceeds 60-minute commute preference; role is focused on risk/performance reporting rather than direct PM.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Bank J. Safra Sarasin AG</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Basel (~58m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Risk & Quantitative</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 1: Quantitative Portfolio Management & Systematic Strategies (Tangential/Supportive)</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>EN + DE B1/B2 OK</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('08d47bb40c01')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Risk & Performance Specialist', 'Bank J. Safra Sarasin AG', '🎯 Track: Track 1: Quantitative Portfolio Management & Systematic Strategies (Tangential/Supportive) | ✅ Fit: Expertise in hybrid risk modeling, factor covariance decomposition, and Python/cvxpy convex optimization | ⚠️ Gaps: Basel location exceeds 60-minute commute preference; role is focused on risk/performance reporting rather than direct PM.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('08d47bb40c01')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="e1290e439706" data-category="Wealth Management" data-track="Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation" data-score="6" data-commute="58" data-title="Lead Product Managerin Investment & Wealth Solutions (w/m)" data-company="Basler Kantonalbank" data-date="2026-11-14" data-degree="Charterholder / CFA Level II+">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/cc6a47c7-2586-48f0-a1c7-9e0d7e4f6a3c/" target="_blank" rel="noopener" class="job-title">Lead Product Managerin Investment & Wealth Solutions (w/m)</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> UBS GWM Director experience in discretionary mandate engineering and fund selection</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Requires C1/C2 German fluency and is at the limit of the commute radius.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Basler Kantonalbank</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Basel (~58m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Wealth Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation</div></td>
+            <td class="col-degree-cell"><span class="tag">Charterholder / CFA Level II+</span><br><small>Fluent DE Required (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('e1290e439706')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Lead Product Managerin Investment & Wealth Solutions (w/m)', 'Basler Kantonalbank', '🎯 Track: Track 4: Head of Mandates, Multi-Asset PM & CIO Asset Allocation | ✅ Fit: UBS GWM Director experience in discretionary mandate engineering and fund selection | ⚠️ Gaps: Requires C1/C2 German fluency and is at the limit of the commute radius.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('e1290e439706')">Hide</button>
+            </td>
+        </tr>
+        
+        <tr data-id="c1a8468ab79b" data-category="Asset Management" data-track="Track 8: Swiss Pension Funds & Public Institutional Allocators" data-score="6" data-commute="58" data-title="Kundenbetreuer/in Berufliche Vorsorge 80-100%" data-company="Pensionskasse MOBIL" data-date="2026-11-14" data-degree="MSc / CFA Suitable">
+            <td class="col-fit-cell"><span class="badge score-low">6/10</span></td>
+            <td class="col-role-cell">
+                <a href="https://www.jobs.ch/en/vacancies/detail/bddfda77-70a2-4c77-a41a-35641f846622/" target="_blank" rel="noopener" class="job-title">Kundenbetreuer/in Berufliche Vorsorge 80-100%</a>
+                <div class="job-summary"><div class="sum-row"><span class="sum-tag sum-fit">✅ Fit</span> Matches Asset Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit.</div><div class="sum-row"><span class="sum-tag sum-gap">⚠️ Gaps</span> Heuristic fallback evaluation - requires Gemini LLM audit.</div></div>
+            </td>
+            <td class="col-co-cell"><strong>Pensionskasse MOBIL</strong><br><small class="muted">jobs.ch</small></td>
+            <td class="col-commute-cell"><span class="badge commute-far">Bern (~58m Car/SBB)</span></td>
+            <td class="col-cat-cell"><span class="tag cat-tag">Asset Management</span><div class="cat-track"><span class="sum-tag sum-track">🎯 Track</span> Track 8: Swiss Pension Funds & Public Institutional Allocators</div></td>
+            <td class="col-degree-cell"><span class="tag">MSc / CFA Suitable</span><br><small>English (C1/C2)</small></td>
+            <td class="col-found-cell">14 November 2026</td>
+            <td class="col-action-cell">
+                <button class="btn-action" onclick="toggleApplied('c1a8468ab79b')">Applied</button>
+                <button class="btn-prompt" onclick="copyPrompt(event, 'Kundenbetreuer/in Berufliche Vorsorge 80-100%', 'Pensionskasse MOBIL', '🎯 Track: Track 8: Swiss Pension Funds & Public Institutional Allocators | ✅ Fit: Matches Asset Management background: Cambridge MPhil, CFA Charter, Director / PM track record, and quantitative toolkit. | ⚠️ Gaps: Heuristic fallback evaluation - requires Gemini LLM audit.')">CV prompt</button>
+                <button class="btn-hide btn-hide-toggle" onclick="hideRow('c1a8468ab79b')">Hide</button>
+            </td>
+        </tr>
+        
+        </tbody>
+    </table>
+
+<script>
+    let showHiddenOnly = false;
+
+    function getHiddenJobs() {
+        return JSON.parse(localStorage.getItem('hiddenJobs') || '[]');
+    }
+
+    function updateHiddenCount() {
+        const hidden = getHiddenJobs();
+        const btn = document.getElementById('toggleHiddenBtn');
+        if (!btn) return;
+        if (showHiddenOnly) {
+            btn.classList.add('active-hidden-view');
+            btn.innerText = `← View Active Roles (${hidden.length} hidden)`;
+        } else {
+            btn.classList.remove('active-hidden-view');
+            btn.innerText = `Show Hidden (${hidden.length})`;
+        }
+    }
+
+    function toggleShowHidden() {
+        showHiddenOnly = !showHiddenOnly;
+        updateHiddenCount();
+        filterTable();
+    }
+
+    function loadState() {
+        const applied = JSON.parse(localStorage.getItem('appliedJobs') || '[]');
+        document.querySelectorAll('#jobsTable tbody tr').forEach(tr => {
+            const id = tr.dataset.id;
+            if (applied.includes(id)) tr.classList.add('applied');
+        });
+        updateHiddenCount();
+    }
+    function toggleApplied(id) {
+        let applied = JSON.parse(localStorage.getItem('appliedJobs') || '[]');
+        const tr = document.querySelector(`tr[data-id="${id}"]`);
+        if (applied.includes(id)) {
+            applied = applied.filter(x => x !== id);
+            tr.classList.remove('applied');
+        } else {
+            applied.push(id);
+            tr.classList.add('applied');
+        }
+        localStorage.setItem('appliedJobs', JSON.stringify(applied));
+    }
+    function hideRow(id) {
+        let hidden = getHiddenJobs();
+        if (!hidden.includes(id)) hidden.push(id);
+        localStorage.setItem('hiddenJobs', JSON.stringify(hidden));
+        updateHiddenCount();
+        filterTable();
+    }
+    function unhideRow(id) {
+        let hidden = getHiddenJobs();
+        hidden = hidden.filter(x => x !== id);
+        localStorage.setItem('hiddenJobs', JSON.stringify(hidden));
+        updateHiddenCount();
+        filterTable();
+    }
+    function copyPrompt(e, title, company, summary) {
+        const prompt = `I am applying for the position of "${title}" at "${company}".
+
+Candidate Profile:
+- Education & Credentials: MPhil in Finance & Economics (Cambridge University), BSc in Economics, CFA Charterholder, GRE Quant 170/170.
+- Track Record & Experience: Director & Quantitative Portfolio Manager (Zurich). Managed $4B+ across single-name equity mandates, multi-asset solutions, and fund-of-funds within a multi-billion AuM mandates business. Direct experience in fundamental equity rotation, multi-manager due diligence, and bespoke UHNW advisory.
+- Quantitative & Engineering Toolkit: Python (cvxpy, convex optimizer, pandas, numpy, scikit-learn), R, SQL, Git, Bloomberg, FactSet, Morningstar Direct. Architected end-to-end Python factor platforms (factor creation, winsorization, IC/IR evaluation, turnover-constrained mean-variance & tracking error optimizations).
+- Languages: English (Fluent/C2), German (Conversational B1/B2, reading documentation & client materials).
+
+Role Context & Critical Match Assessment:
+${summary}
+
+Please generate:
+1. Three tailored, high-impact bullet points for my CV emphasizing my specific relevant investment, portfolio management, or quantitative experience for this role and strategically addressing any identified gaps.
+2. A compelling 3-point alignment pitch explaining why my Cambridge MPhil, CFA Charter, institutional Portfolio Manager track record, and quantitative/programming edge make me an ideal candidate for "${company}".
+3. A polished, sophisticated, and professional Swiss-style financial cover letter in English matching the institutional tone of "${company}".`;
+
+        navigator.clipboard.writeText(prompt).then(() => {
+            const btn = e.target;
+            const orig = btn.innerText;
+            btn.innerText = 'Copied!';
+            btn.style.background = '#16a34a';
+            setTimeout(() => {
+                btn.innerText = orig;
+                btn.style.background = '';
+            }, 2000);
+        });
+    }
+    function filterTable() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const cat = document.getElementById('catFilter').value;
+        const maxC = parseInt(document.getElementById('commuteFilter').value);
+        const minS = parseInt(document.getElementById('scoreFilter').value || '0');
+        const hidden = getHiddenJobs();
+
+        let visibleCount = 0;
+        document.querySelectorAll('#jobsTable tbody tr').forEach(tr => {
+            const id = tr.dataset.id;
+            const isHidden = hidden.includes(id);
+
+            if (showHiddenOnly) {
+                if (!isHidden) {
+                    tr.style.display = 'none';
+                    return;
+                }
+                tr.classList.add('is-hidden-row');
+                const btn = tr.querySelector('.btn-hide-toggle');
+                if (btn) {
+                    btn.innerText = 'Unhide';
+                    btn.className = 'btn-hide btn-unhide btn-hide-toggle';
+                    btn.onclick = () => unhideRow(id);
+                }
+            } else {
+                if (isHidden) {
+                    tr.style.display = 'none';
+                    return;
+                }
+                tr.classList.remove('is-hidden-row');
+                const btn = tr.querySelector('.btn-hide-toggle');
+                if (btn) {
+                    btn.innerText = 'Hide';
+                    btn.className = 'btn-hide btn-hide-toggle';
+                    btn.onclick = () => hideRow(id);
+                }
+            }
+
+            const text = tr.innerText.toLowerCase();
+            const matchQ = text.includes(q);
+            const matchCat = !cat || tr.dataset.category === cat;
+            const matchC = parseInt(tr.dataset.commute) <= maxC;
+            const matchS = parseInt(tr.dataset.score) >= minS;
+            const isVisible = (matchQ && matchCat && matchC && matchS);
+            tr.style.display = isVisible ? '' : 'none';
+            if (isVisible) visibleCount++;
+        });
+
+        const countDisplay = document.getElementById('roleCountDisplay');
+        if (countDisplay) {
+            countDisplay.innerHTML = showHiddenOnly
+                ? `<strong>${visibleCount}</strong> Hidden Roles`
+                : `<strong>${visibleCount}</strong> Matching Roles`;
+        }
+    }
+
+    let currentSortCol = 0;
+    let currentSortDir = 'desc';
+
+    function getCellValue(tr, idx) {
+        switch (idx) {
+            case 0: return parseInt(tr.dataset.score || '0', 10);
+            case 1: return (tr.dataset.title || '').toLowerCase();
+            case 2: return (tr.dataset.company || '').toLowerCase();
+            case 3: return parseInt(tr.dataset.commute || '999', 10);
+            case 4: return ((tr.dataset.category || '') + ' ' + (tr.dataset.track || '')).toLowerCase();
+            case 5: return (tr.dataset.degree || tr.children[5]?.innerText || '').toLowerCase();
+            case 6: return tr.dataset.date || '';
+            case 7: return tr.classList.contains('applied') ? 1 : 0;
+            default: return tr.children[idx]?.innerText.trim().toLowerCase() || '';
+        }
+    }
+
+    function onMobileSortChange() {
+        const val = document.getElementById('mobileSort').value;
+        const [colStr, dir] = val.split('-');
+        sortTable(parseInt(colStr, 10), dir);
+    }
+
+    function sortTable(colIndex, forcedDir = null) {
+        const table = document.getElementById('jobsTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headers = table.querySelectorAll('thead th');
+
+        if (forcedDir) {
+            currentSortCol = colIndex;
+            currentSortDir = forcedDir;
+        } else if (currentSortCol === colIndex) {
+            currentSortDir = (currentSortDir === 'asc') ? 'desc' : 'asc';
+        } else {
+            currentSortCol = colIndex;
+            // Fit (0), Found (6), Track (7) default to descending; others default to ascending
+            currentSortDir = (colIndex === 0 || colIndex === 6 || colIndex === 7) ? 'desc' : 'asc';
+        }
+
+        // Sync mobile sort dropdown if present
+        const mobileSort = document.getElementById('mobileSort');
+        if (mobileSort) {
+            const key = `${colIndex}-${currentSortDir}`;
+            for (let opt of mobileSort.options) {
+                if (opt.value === key) {
+                    mobileSort.value = key;
+                    break;
+                }
+            }
+        }
+
+        headers.forEach((th, idx) => {
+            th.classList.remove('asc', 'desc');
+            const icon = th.querySelector('.sort-icon');
+            if (icon) {
+                if (idx === colIndex) {
+                    th.classList.add(currentSortDir);
+                    icon.textContent = currentSortDir === 'asc' ? '▲' : '▼';
+                } else {
+                    icon.textContent = '↕';
+                }
+            }
+        });
+
+        rows.sort((a, b) => {
+            const valA = getCellValue(a, colIndex);
+            const valB = getCellValue(b, colIndex);
+
+            let comp = 0;
+            if (typeof valA === 'number' && typeof valB === 'number') {
+                comp = valA - valB;
+            } else {
+                comp = String(valA).localeCompare(String(valB));
+            }
+            if (comp !== 0) return currentSortDir === 'asc' ? comp : -comp;
+
+            // Tie-breakers: Fit sorts secondary by Date (newest first); Date sorts secondary by Fit (highest first)
+            if (colIndex === 0) {
+                const dateA = a.dataset.date || '';
+                const dateB = b.dataset.date || '';
+                return dateB.localeCompare(dateA);
+            }
+            if (colIndex === 6) {
+                const fitA = parseInt(a.dataset.score || '0', 10);
+                const fitB = parseInt(b.dataset.score || '0', 10);
+                return fitB - fitA;
+            }
+            return 0;
+        });
+
+        rows.forEach(r => tbody.appendChild(r));
+    }
+    loadState();
+    filterTable();
+</script>
+</body>
+</html>
