@@ -444,7 +444,7 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client, limit: int = N
     print(f"[*] Found {len(rows)} heuristic fallback jobs. Re-evaluating via Gemini Flash...")
     rescored = 0
     consecutive_failures = 0
-    for jhash, title, company, location, url, source, old_summary, old_score in rows:
+    for i, (jhash, title, company, location, url, source, old_summary, old_score) in enumerate(rows, 1):
         desc_to_eval = ""
         if url:
             body = fetch_job_description_body(url, timeout=3.0)
@@ -472,7 +472,7 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client, limit: int = N
             ))
             conn.commit()
             rescored += 1
-            print(f"  [Rescored Gemini] {title[:35]} @ {company[:18]} -> was {old_score}/10, now {ev.match_score}/10 ({ev.role_category})")
+            print(f"  [{i}/{len(rows)}] [Rescored Gemini] {title[:35]} @ {company[:18]} -> was {old_score}/10, now {ev.match_score}/10 ({ev.role_category})")
         else:
             consecutive_failures += 1
             # If Gemini still failed, update row with clean conservative heuristic
@@ -491,11 +491,11 @@ def rescore_heuristic_fallbacks(conn: sqlite3.Connection, client, limit: int = N
                 jhash,
             ))
             conn.commit()
-            print(f"  [Kept Heuristic] {title[:35]} @ {company[:18]} -> calibrated heuristic {old_score}/10 -> {ev.match_score}/10")
-            if stop_on_quota_error and consecutive_failures >= 2:
+            print(f"  [{i}/{len(rows)}] [Kept Heuristic] {title[:35]} @ {company[:18]} -> calibrated heuristic {old_score}/10 -> {ev.match_score}/10")
+            if stop_on_quota_error and consecutive_failures >= 3:
                 print("  [!] Gemini quota unavailable or exhausted. Pausing heuristic rescoring pass until next run.")
                 break
-        time.sleep(1.0)
+        time.sleep(1.5)
 
     print(f"[+] Re-scored {rescored}/{len(rows)} heuristic fallback jobs via Gemini!")
     return rescored
