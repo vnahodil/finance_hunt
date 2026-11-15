@@ -24,6 +24,10 @@ rescore:
 rescore-heuristic:
 	.venv/bin/python zurich_finance_radar.py --rescore-heuristic --publish --no-browser
 
+# List available Gemini models for your API key
+check-models:
+	.venv/bin/python -c "from src.config import cfg; from google import genai; c = genai.Client(api_key=cfg.GEMINI_API_KEY); print('Available Flash models:'); [print(f'  • {m.name:<30} ({m.display_name})') for m in sorted(c.models.list(), key=lambda x: x.name) if 'generateContent' in m.supported_actions and 'flash' in m.name and 'image' not in m.name]"
+
 # Test sending email digest with top recent jobs
 test-email:
 	.venv/bin/python zurich_finance_radar.py --test-email
