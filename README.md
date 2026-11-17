@@ -71,10 +71,10 @@ make publish
 make dashboard
 ```
 
-### 3. Daily Automation & Email Alerts (08:00 AM)
-Automated every morning at **08:00 AM** via native macOS `launchd`:
+### 3. Daily Automation & Email Alerts (16:00 / 4:00 PM)
+Automated every day at **16:00 (4:00 PM)** via native macOS `launchd`:
 ```bash
-# Check status of scheduled 8am agent:
+# Check status of scheduled daily agent:
 make status-schedule
 
 # Reload schedule if modified:

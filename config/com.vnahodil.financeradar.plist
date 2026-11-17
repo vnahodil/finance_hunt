@@ -14,11 +14,11 @@
     <key>WorkingDirectory</key>
     <string>/Users/vnahodil/dev/finance_hunt</string>
 
-    <!-- Scheduled Time: 08:00 AM every day -->
+    <!-- Scheduled Time: 16:00 (4:00 PM) every day -->
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
-        <integer>8</integer>
+        <integer>16</integer>
         <key>Minute</key>
         <integer>0</integer>
     </dict>

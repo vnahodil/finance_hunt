@@ -32,8 +32,9 @@ check-models:
 test-email:
 	.venv/bin/python zurich_finance_radar.py --test-email
 
-# Load and activate 8:00 AM daily job in macOS launchd
+# Load and activate 16:00 (4:00 PM) daily job in macOS launchd
 schedule:
+	launchctl unload ~/Library/LaunchAgents/com.vnahodil.financeradar.plist 2>/dev/null || true
 	cp config/com.vnahodil.financeradar.plist ~/Library/LaunchAgents/com.vnahodil.financeradar.plist
 	launchctl load ~/Library/LaunchAgents/com.vnahodil.financeradar.plist
 	launchctl list | grep -i financeradar
